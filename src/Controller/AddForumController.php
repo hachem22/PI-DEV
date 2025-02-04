@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AddForumController extends AbstractController
 {
     /**
-     * @Route("/forums", name="forum_index")
+     * @Route("/forums", name="forum_index") hh
      */
     public function index(): Response
     {
