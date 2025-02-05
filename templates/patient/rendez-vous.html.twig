@@ -1,0 +1,76 @@
+{% extends 'basePatient.html.twig' %}
+
+{% block title %}Prise de Rendez-vous{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Prendre un Rendez-vous</h2>
+
+        <form id="rendezVousForm" method="post" action="{{ path('rendez_vous_ajouter') }}">
+            <!-- Informations du patient (readonly) -->
+            <div class="form-group">
+                <label>Nom :</label>
+                <input type="text" class="form-control" value="{{ patient.nom }}" readonly>
+            </div>
+            <div class="form-group">
+                <label>Prénom :</label>
+                <input type="text" class="form-control" value="{{ patient.prenom }}" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email :</label>
+                <input type="email" class="form-control" value="{{ patient.email }}" readonly>
+            </div>
+
+            <!-- Dropdown Département -->
+            <div class="form-group">
+                <label for="departement">Département :</label>
+                <select id="departement" class="form-control" name="departement" required>
+                    <option value="">Sélectionnez un département</option>
+                    {% for departement in departements %}
+                        <option value="{{ departement.id }}">{{ departement.nom }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Dropdown Médecin (rempli dynamiquement) -->
+            <div class="form-group">
+                <label for="medecin">Médecin :</label>
+                <select id="medecin" class="form-control" name="medecin" required>
+                    <option value="">Sélectionnez un médecin</option>
+                </select>
+            </div>
+
+            <!-- Date du rendez-vous -->
+            <div class="form-group">
+                <label for="date_rdv">Date et Heure :</label>
+                <input type="datetime-local" class="form-control" id="date_rdv" name="date_rdv" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Valider le Rendez-vous</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("departement").addEventListener("change", function () {
+            let departementId = this.value;
+            let medecinSelect = document.getElementById("medecin");
+
+            // Réinitialiser le dropdown des médecins
+            medecinSelect.innerHTML = '<option value="">Sélectionnez un médecin</option>';
+
+            if (departementId) {
+                fetch(`/medecins-par-departement/${departementId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(medecin => {
+                            let option = document.createElement("option");
+                            option.value = medecin.id;
+                            option.textContent = medecin.nom + " " + medecin.prenom;
+                            medecinSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error("Erreur lors du chargement des médecins :", error));
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,7 +1,4 @@
-{# templates/admin/base_admin.html.twig #}
-
-
-{% block body %}
+{% extends 'admin/base_admin.html.twig' %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,24 +53,6 @@
                     </div>
                 </div>
     </div>
-    <!--**********************************
-        Nav header end
-    ***********************************-->
-
-    <!--**********************************
-            Chat box start
-        ***********************************-->
-
-    <!--**********************************
-            Chat box End
-        ***********************************-->
-
-
-
-
-    <!--**********************************
-        Header start
-    ***********************************-->
     <div class="header">
         <div class="header-content">
             <nav class="navbar navbar-expand">
@@ -144,11 +123,15 @@
                         <span class="nav-text">Utilisateurs</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="">Liste des employés</a></li>
+                        <li><a href="{{ path('admin_patients') }}">Liste des patients</a></li>
                     </ul>
                     <ul aria-expanded="false">
-                        <li><a href="">Liste des clients</a></li>
+                        <li><a href="">Liste des medecins</a></li>
                     </ul>
+                    <ul aria-expanded="false">
+                        <li><a href="">Liste des employees</a></li>
+                    </ul>
+
 
                 </li>
 
@@ -228,8 +211,10 @@
     </script>
    
 
+{% block body %}
 
-
+    s
+{% endblock %}
 </body>
 </html>
-{% endblock %}
+
