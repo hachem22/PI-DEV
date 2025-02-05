@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CareConnect{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/templatemo-chain-app-dev.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/animated.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
+    {% block stylesheets %}
+    {% endblock %}
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="js-preloader" class="js-preloader">
+        <div class="preloader-inner">
+            <span class="dot"></span>
+            <div class="dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- Logo -->
+                        <a href="#" class="logo" style="margin-left: -8px;">
+                            <img src="{{ asset('assets/images/logo2.png') }}" alt="Chain App Dev" width="80px" height="80px">
+                        </a>
+                        <!-- Menu -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="#services">Services</a></li>
+                            <li class="scroll-to-section"><a href="#about">About</a></li>
+                            <li class="scroll-to-section"><a href="#pricing">Pricing</a></li>
+                            <li class="scroll-to-section"><a href="#newsletter">Newsletter</a></li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/owl-carousel.js') }}"></script>
+    <script src="{{ asset('assets/js/animation.js') }}"></script>
+    <script src="{{ asset('assets/js/imagesloaded.js') }}"></script>
+    <script src="{{ asset('assets/js/popup.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
+    {% block javascripts %}
+    {% endblock %}
+    </body>
+    {% block body %}
+    {% endblock %}
+
