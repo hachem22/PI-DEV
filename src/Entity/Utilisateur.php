@@ -39,6 +39,10 @@ class Utilisateur
     #[ORM\Column(enumType: MedecinSpecialite::class)]
     private ?MedecinSpecialite $medecinSpecilaite = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ListeUtilisateur')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Service $service = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +140,18 @@ class Utilisateur
     public function setMedecinSpecilaite(MedecinSpecialite $medecinSpecilaite): static
     {
         $this->medecinSpecilaite = $medecinSpecilaite;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): static
+    {
+        $this->service = $service;
 
         return $this;
     }
