@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+    {{ form_row(form.Nom) }}
+    {{ form_row(form.Prenom) }}
+    {{ form_row(form.Email) }}
+    {{ form_row(form.Adress) }}
+    {{ form_row(form.Tel) }}
+    {{ form_row(form.Grade) }}
+
+    {# Fixing enum fields to avoid conversion errors #}
+    {{ form_row(form.utilisateurRole, {
+        'attr': {'class': 'form-control'}
+    }) }}
+
+    {{ form_row(form.medecinSpecilaite, {
+        'attr': {'class': 'form-control'}
+    }) }}
+
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
