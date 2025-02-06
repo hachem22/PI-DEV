@@ -1,0 +1,67 @@
+{% extends 'patient/basePatient.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2 class="text-center">Prise de Rendez-vous</h2>
+        
+        <!-- Formulaire d'informations utilisateur et sélection du médecin -->
+        <form id="step1">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" class="form-control" id="nom" name="nom" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="departement" class="form-label">Département</label>
+                <select class="form-select" id="departement" name="departement" required>
+                    <option value="">Sélectionner un département</option>
+                    <option value="cardiologie">Cardiologie</option>
+                    <option value="dermatologie">Dermatologie</option>
+                    <option value="neurologie">Neurologie</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="medecin" class="form-label">Médecin</label>
+                <select class="form-select" id="medecin" name="medecin" required>
+                    <option value="">Sélectionner un médecin</option>
+                    <option value="dr_smith">Dr Smith</option>
+                    <option value="dr_johnson">Dr Johnson</option>
+                    <option value="dr_brown">Dr Brown</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-primary" id="nextStep">Suivant</button>
+        </form>
+        
+        <!-- Sélection des dates disponibles -->
+        <div id="step2" class="mt-4" style="display: none;">
+            <h3 class="text-center">Dates disponibles</h3>
+            <form id="appointmentForm">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="date" value="2025-02-10" id="date1">
+                        <label class="form-check-label" for="date1">10 Février 2025</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="date" value="2025-02-12" id="date2">
+                        <label class="form-check-label" for="date2">12 Février 2025</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="date" value="2025-02-15" id="date3">
+                        <label class="form-check-label" for="date3">15 Février 2025</label>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Confirmer</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('nextStep').addEventListener('click', function() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        });
+    </script>
+{% endblock %}

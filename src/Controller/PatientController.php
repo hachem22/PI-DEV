@@ -20,6 +20,5 @@ final class PatientController extends AbstractController
     #[Route('/patient/rendezVous', name: 'rendezVous')]
     public function rendezVous()
     {
-        return $this->render('rendez-vous.html.twig');
     }
 }

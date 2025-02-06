@@ -12,7 +12,7 @@ final class LandingPageController extends AbstractController
     #[Route('/', name: 'app_landing_page')]
     public function index(): Response
     {
-        return $this->render('landing_page/index.html.twig', [
+        return $this->render('base.html.twig', [
             'controller_name' => 'LandingPageController',
         ]);
     }
