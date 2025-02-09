@@ -1,0 +1,51 @@
+{% extends 'visite/BaseVisite.html.twig' %}
+
+{% block title %}{{ form.vars.value is not null ? 'Modifier' : 'Ajouter' }} une Visite{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>{{ form.vars.value is not null ? 'Modifier' : 'Ajouter' }} une Visite</h1>
+
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        
+        <div class="mb-3">
+            {{ form_label(form.dateVisite, 'Date de la visite', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.dateVisite, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dateVisite) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.diagnostic, 'Diagnostic', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.diagnostic, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.diagnostic) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.ordonnace, 'Ordonnance', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.ordonnace, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.ordonnace) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.ceteficat, 'Certificat', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.ceteficat, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.ceteficat) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.Rdv, 'Rendez-vous associé', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.Rdv, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.Rdv) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.dossierMedical, 'Dossier Médical associé', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.dossierMedical, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dossierMedical) }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

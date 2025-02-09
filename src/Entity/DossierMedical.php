@@ -3,9 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\DossierMedicalRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: DossierMedicalRepository::class)]
 class DossierMedical
@@ -16,27 +15,31 @@ class DossierMedical
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le groupe sanguin est obligatoire.")]
+    #[Assert\Length(max: 255, maxMessage: "Le groupe sanguin ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $Groupe_sanguin = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: "Les allergies sont obligatoires.")]
     private ?string $Allergies = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: "Les vaccinations sont obligatoires.")]
     private ?string $Vaccinations = null;
 
-    /**
-     * @var Collection<int, Visite>
-     */
-    #[ORM\OneToMany(targetEntity: Visite::class, mappedBy: 'dossierMedical')]
-    private Collection $vistes;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $Antecedents_medicaux = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $Traitements_en_cours = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $Remarques = null;
+
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'dossiersMedicaux')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: "Le patient est obligatoire.")]
     private ?Utilisateur $patient = null;
-
-    public function __construct()
-    {
-        $this->vistes = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -51,7 +54,6 @@ class DossierMedical
     public function setGroupeSanguin(string $Groupe_sanguin): static
     {
         $this->Groupe_sanguin = $Groupe_sanguin;
-
         return $this;
     }
 
@@ -63,7 +65,6 @@ class DossierMedical
     public function setAllergies(string $Allergies): static
     {
         $this->Allergies = $Allergies;
-
         return $this;
     }
 
@@ -75,37 +76,39 @@ class DossierMedical
     public function setVaccinations(string $Vaccinations): static
     {
         $this->Vaccinations = $Vaccinations;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Visite>
-     */
-    public function getVistes(): Collection
+    public function getAntecedentsMedicaux(): ?string
     {
-        return $this->vistes;
+        return $this->Antecedents_medicaux;
     }
 
-    public function addViste(Visite $viste): static
+    public function setAntecedentsMedicaux(?string $Antecedents_medicaux): static
     {
-        if (!$this->vistes->contains($viste)) {
-            $this->vistes->add($viste);
-            $viste->setDossierMedical($this);
-        }
-
+        $this->Antecedents_medicaux = $Antecedents_medicaux;
         return $this;
     }
 
-    public function removeViste(Visite $viste): static
+    public function getTraitementsEnCours(): ?string
     {
-        if ($this->vistes->removeElement($viste)) {
-            // set the owning side to null (unless already changed)
-            if ($viste->getDossierMedical() === $this) {
-                $viste->setDossierMedical(null);
-            }
-        }
+        return $this->Traitements_en_cours;
+    }
 
+    public function setTraitementsEnCours(?string $Traitements_en_cours): static
+    {
+        $this->Traitements_en_cours = $Traitements_en_cours;
+        return $this;
+    }
+
+    public function getRemarques(): ?string
+    {
+        return $this->Remarques;
+    }
+
+    public function setRemarques(?string $Remarques): static
+    {
+        $this->Remarques = $Remarques;
         return $this;
     }
 
@@ -117,7 +120,6 @@ class DossierMedical
     public function setPatient(?Utilisateur $patient): static
     {
         $this->patient = $patient;
-
         return $this;
     }
 }
