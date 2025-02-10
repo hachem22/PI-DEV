@@ -1,0 +1,59 @@
+{% extends 'chambre/chambreBase.html.twig' %}
+{% block title %}Liste des chambres{% endblock %}
+
+{% block body %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Liste des chambres</h1>
+    
+    <table class="table table-striped table-hover shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                <th>ID</th>
+                <th>Numéro</th>
+                <th>Type</th>
+                <th>Localisation</th>
+                <th>Capacité</th>
+                <th>Etat</th>
+                <th>entretient</th>
+                 <th>Visualisation 3D</th>
+                <th>Édition</th>
+                <th>Suppression</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for chambre in chambres %}
+                <tr>
+                    <td>{{ chambre.id }}</td>
+                    <td>{{ chambre.num }}</td>
+                    <td>{{ chambre.type }}</td>
+                    <td>{{ chambre.localisation }}</td>
+                    <td>{{ chambre.capacite }}</td>
+                    <td>{{ chambre.active }}</td>
+                    <td>
+                        <a href="{{ path('chambre.entretients', {id: chambre.id}) }}" class="btn btn-info btn-sm">Voir entretiens</a>
+                    </td>
+                     <td>
+                        <a href="{{ path('chambre.visualisation', {id: chambre.id}) }}" class="btn btn-primary btn-sm">Visualiser 3D</a>
+                    </td
+                    <td>
+                        <a href="{{ path('chambre.edit', {id: chambre.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('chambre.supprimer', {id: chambre.id}) }}" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer cette chambre ?');">Supprimer</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucune chambre disponible</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-end mt-3">
+        <a href="{{ path('chambre.new') }}" class="btn btn-success">Créer une nouvelle chambre</a>
+    </div>
+</div>
+{% endblock %}

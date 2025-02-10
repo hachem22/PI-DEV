@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualisation 3D Chambre {{ chambre.num }}</title>
+  <style>
+    canvas { display: block; margin: 0 auto; }
+    body { margin: 0; background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Visualisation de la Chambre {{ chambre.num }}</h1>
+  <div id="scene-container"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+    // Création de la scène
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('scene-container').appendChild(renderer.domElement);
+
+    // Ajout de lumière
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // Lumière ambiante douce
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 10, 7.5);
+    directionalLight.target.position.set(0, 0, 0); // La lumière pointe vers le centre de la scène
+    scene.add(directionalLight);
+    scene.add(directionalLight.target);
+
+    // Sol
+    const floorGeometry = new THREE.PlaneGeometry(10, 10);
+    const floorMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0xcccccc, 
+      side: THREE.DoubleSide, 
+      metalness: 0, 
+      roughness: 0.5 
+    });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = -Math.PI / 2; // Rotation pour que le plan soit horizontal
+    scene.add(floor);
+
+    // Ajout des lits dynamiques
+    const lits = {{lits|json_encode()|raw}} ; // Données des lits passées depuis le backend
+    console.log(lits);  // Affiche le tableau d'objets "Lit" dans la console
+
+    lits.forEach(lit => {
+      const bedGeometry = new THREE.BoxGeometry(1, 0.5, 2); // Dimensions du lit
+      const bedColor = lit.status === 'libre' ? 0x44aa44 : 0xaa4444; // Couleur en fonction du statut
+      const bedMaterial = new THREE.MeshStandardMaterial({ 
+        color: bedColor, 
+        metalness: 0, 
+        roughness: 0.5 
+      });
+      const bed = new THREE.Mesh(bedGeometry, bedMaterial);
+      bed.position.set(lit.positionX, 0.25, lit.positionZ); // Position du lit
+      scene.add(bed);
+    });
+
+    // Position de la caméra
+    camera.position.set(5, 5, 5); // Position de la caméra
+    camera.lookAt(0, 0, 0); // La caméra regarde vers le centre de la scène
+
+    // Contrôles pour interagir avec la scène
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; // Ajoute un effet de lissage
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI / 2; // Limite l'angle de la caméra
+
+    // Fonction d'animation
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update(); // Met à jour les contrôles
+      renderer.render(scene, camera); // Rend la scène
+    }
+    animate();
+
+    // Gestion du redimensionnement de la fenêtre
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix(); // Met à jour la projection de la caméra
+      renderer.setSize(window.innerWidth, window.innerHeight); // Redimensionne le rendu
+    });
+  </script>
+</body>
+</html>
