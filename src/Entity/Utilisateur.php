@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -78,6 +79,9 @@ class Utilisateur
     #[Assert\NotNull(message: "Le service est obligatoire.")]
     private ?Service $service = null;
 
+    #[ORM\ManyToOne(inversedBy: 'Service')]
+    private ?RendezVous $rendezVous = null;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -179,6 +183,18 @@ class Utilisateur
     public function setService(?Service $service): static
     {
         $this->service = $service;
+        return $this;
+    }
+
+    public function getRendezVous(): ?RendezVous
+    {
+        return $this->rendezVous;
+    }
+
+    public function setRendezVous(?RendezVous $rendezVous): static
+    {
+        $this->rendezVous = $rendezVous;
+
         return $this;
     }
 }

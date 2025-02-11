@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CareConnect{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚕️</text></svg>">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+    <!-- Sidebar (à gauche) -->
+    <div class="sidebar">
+        <h2>Espace Medecin</h2>
+        <ul>
+            <li><a href="#"><i class="fa-solid fa-house"></i> Acueill </a></li>
+            <li><a href="#"><i class="fas fa-calendar-check"></i> Liste rendez-vous </a></li>
+            <li><a href="#"><i class="fas fa-file-medical"></i> Mon Dossier Médical</a></li>
+                        <li><a href="#"><i class="fa-solid fa-calendar-days"></i>Calendrier</a></li>
+
+            <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+        </ul>
+    </div>
+
+    <!-- Navbar -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="nav-content d-flex justify-content-between align-items-center">
+                <a href="#" class="logo">
+                    <img src="{{ asset('assets/images/logo2.png') }}" alt="CareConnect" width="60" height="60">
+                </a>
+                <div class="profile-dropdown position-relative">
+                    <button class="profile-btn btn btn-light d-flex align-items-center">
+                        <img src="{{ asset('assets/images/lhech.jpg') }}" alt="Profil" class="profile-img rounded-circle" width="40" height="40">
+                        <span class="ms-2">Patient</span>
+                        <i class="fas fa-chevron-down ms-2"></i>
+                    </button>
+                    <ul class="dropdown-menu position-absolute bg-white shadow p-2 rounded d-none">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Mon Profil</a></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+        {% block body %}{% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let profileBtn = document.querySelector(".profile-btn");
+            let dropdownMenu = document.querySelector(".dropdown-menu");
+
+            // Gestion du menu déroulant du profil
+            profileBtn.addEventListener("click", function (event) {
+                event.stopPropagation();
+                dropdownMenu.classList.toggle("d-none");
+            });
+
+            // Fermer le menu si on clique ailleurs
+            document.addEventListener("click", function (event) {
+                if (!profileBtn.contains(event.target)) {
+                    dropdownMenu.classList.add("d-none");
+                }
+            });
+        });
+    </script>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

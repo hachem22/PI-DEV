@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
-use App\Enum\Rdvstatus;
+use App\Enum\RendezVousStatus;
 use App\Repository\RendezVousRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,14 +20,26 @@ class RendezVous
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(enumType: Rdvstatus::class)]
-    private ?Rdvstatus $status = null;
+    // Relation avec le médecin
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'rendezVous')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $medecin = null;
 
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $heure = null;
 
+    // Relation avec la visite
     #[ORM\OneToOne(mappedBy: 'Rdv', cascade: ['persist', 'remove'])]
     private ?Visite $visite = null;
+
+    // Statut du rendez-vous (enum)
+    #[ORM\Column(type: 'string', length: 50, nullable: true)] // Modifier le type en 'string' et nullable
+    private ?string $rendezVousStatus = null;
+
+    // Relation avec le service
+    #[ORM\ManyToOne(targetEntity: Service::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Service $service = null;
 
     public function getId(): ?int
     {
@@ -40,19 +54,17 @@ class RendezVous
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
-
         return $this;
     }
 
-    public function getStatus(): ?Rdvstatus
+    public function getMedecin(): ?Utilisateur
     {
-        return $this->status;
+        return $this->medecin;
     }
 
-    public function setStatus(Rdvstatus $status): static
+    public function setMedecin(?Utilisateur $medecin): static
     {
-        $this->status = $status;
-
+        $this->medecin = $medecin;
         return $this;
     }
 
@@ -64,7 +76,6 @@ class RendezVous
     public function setHeure(\DateTimeInterface $heure): static
     {
         $this->heure = $heure;
-
         return $this;
     }
 
@@ -89,4 +100,26 @@ class RendezVous
 
         return $this;
     }
+
+    public function getRendezVousStatus(): ?string
+    {
+        return $this->rendezVousStatus;
+    }
+    public function setRendezVousStatus(?string $rendezVousStatus): static
+    {
+        $this->rendezVousStatus = $rendezVousStatus;
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): static
+    {
+        $this->service = $service;
+        return $this;
+    }
+
 }
