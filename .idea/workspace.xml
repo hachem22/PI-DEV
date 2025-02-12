@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="48a21b99-9f65-4520-94e3-09543eb58b1f" name="Changes" comment="fix design">
+      <change afterPath="$PROJECT_DIR$/src/Form/VideoType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/vlog/dashboard.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/vlog/edit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/vlog/upload.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/vlog/video.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,6 +168,7 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/exporter" />
       <path value="$PROJECT_DIR$/vendor/sebastian/cli-parser" />
       <path value="$PROJECT_DIR$/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/vendor/myclabs/php-enum" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{

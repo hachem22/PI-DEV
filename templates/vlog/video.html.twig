@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ video.name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ video.name }}</h1>
+    <p><strong>Uploaded on:</strong> {{ video.uploadDate|date('Y-m-d H:i:s') }}</p>
+    <video controls>
+        <source src="{{ asset('uploads/videos/' ~ video.file) }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <a href="{{ path('vlog_edit', {'id': video.id}) }}" class="btn">Edit Video</a>
+    <a href="{{ path('vlog_dashboard') }}" class="btn">Back to Dashboard</a>
+{% endblock %}
