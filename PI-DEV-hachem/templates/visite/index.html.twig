@@ -1,0 +1,41 @@
+{% extends 'visite/BaseVisite.html.twig' %}
+
+{% block title %}Liste des Visites{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Liste des Visites</h1>
+        <a href="{{ path('visite_ajouter') }}" class="btn btn-primary mb-3">Ajouter une visite</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Diagnostic</th>
+                    <th>Ordonnance</th>
+                    <th>Certificat</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for visite in visites %}
+                    <tr>
+                        <td>{{ visite.id }}</td>
+                        <td>{{ visite.dateVisite|date('d/m/Y') }}</td>
+                        <td>{{ visite.diagnostic }}</td>
+                        <td>{{ visite.ordonnace }}</td>
+                        <td>{{ visite.ceteficat }}</td>
+                        <td>
+                            <a href="{{ path('visite_modifier', {'id': visite.id}) }}" class="btn btn-warning">Modifier</a>
+                            <form method="post" action="{{ path('visite_supprimer', {'id': visite.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ visite.id) }}">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

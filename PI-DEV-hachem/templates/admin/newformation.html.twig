@@ -1,0 +1,55 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+{% block body %}
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white text-center">
+                <h3>{{ formation.id is defined ? '✏️ Créer' : '➕ Ajouter' }} une formation</h3>
+            </div>
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                <div class="form-group">
+                    {{ form_label(form.Nom, 'Nom de la formation') }}
+                    {{ form_widget(form.Nom, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom de la formation'}}) }}
+                    <div class="text-danger">
+                        {{ form_errors(form.Nom) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.Description, 'Description') }}
+                    {{ form_widget(form.Description, {'attr': {'class': 'form-control', 'placeholder': 'Ajoutez une description'}}) }}
+                    <div class="text-danger">
+                        {{ form_errors(form.Description) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.Type, 'Type de formation') }}
+                    {{ form_widget(form.Type, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le type de formation'}}) }}
+                    <div class="text-danger">
+                        {{ form_errors(form.Type) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.Date, 'Date de la formation') }}
+                    {{ form_widget(form.Date, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger">
+                        {{ form_errors(form.Date) }}
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                    <a href="{{ path('formation_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Annuler
+                    </a>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

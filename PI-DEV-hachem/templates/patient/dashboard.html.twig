@@ -1,0 +1,9 @@
+{# templates/patient/dashboard.html.twig #}
+{% extends 'patient/base_patient.html.twig' %}
+
+{% block content %}
+    <h1>Tableau de bord Patient</h1>
+    <ul>
+        <li><a href="{{ path('patient_appointments') }}">Prendre un rendez-vous</a></li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'patient/baseRendezVous.html.twig' %}
+
+{% block title %}Mes Rendez-Vous{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Mes rendez-vous</h1>
+
+        {# Tableau des rendez-vous #}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Heure</th>
+                        <th scope="col">Médecin</th>
+                        <th scope="col">Service</th>
+                        <th scope="col">Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rendezVous in rendezVousList %}
+                        <tr>
+                            <td>{{ rendezVous.id }}</td>
+                            <td>{{ rendezVous.date ? rendezVous.date|date('d/m/Y') : '' }}</td>
+                            <td>{{ rendezVous.heure ? rendezVous.heure|date('H:i') : '' }}</td>
+                            <td>{{ rendezVous.medecin ? rendezVous.medecin.nom : 'Non défini' }}</td>
+                            <td>{{ rendezVous.service ? rendezVous.service.nom.value : 'Non défini' }}</td>
+                            <td>
+    <span class="badge 
+        {% if rendezVous.rendezVousStatus == 'EnAttente' %}bg-warning
+        {% elseif rendezVous.rendezVousStatus == 'Confirme' %}bg-success
+        {% elseif rendezVous.rendezVousStatus == 'Annule' %}bg-danger
+        {% else %}bg-warning
+        {% endif %}">
+        {{ rendezVous.rendezVousStatus ?? 'En Attente' }}
+    </span>
+</td>
+
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">Aucun rendez-vous trouvé.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

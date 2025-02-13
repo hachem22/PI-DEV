@@ -1,0 +1,44 @@
+{% extends 'dossier_medical/BaseDossierMedical.html.twig' %}
+
+{# templates/dossier_medical/ListeDossier.html.twig #}
+
+{% block title %}Liste des Dossiers Médicaux{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Liste des Dossiers Médicaux</h1>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Groupe Sanguin</th>
+                    <th>Allergies</th>
+                    <th>Vaccinations</th>
+                    <th>Patient</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+               {% for dossier in dossier_medicals %}
+              <tr>
+                  <td>{{ dossier.id }}</td>
+                  <td>{{ dossier.Groupesanguin }}</td> {# Utilisez le nom de la propriété #}
+                  <td>{{ dossier.Allergies }}</td>
+                  <td>{{ dossier.Vaccinations }}</td>
+                  <td>{{ dossier.patient ? dossier.patient.nom : 'Aucun' }}</td>
+                  <td>
+                      <a href="{{ path('modifier_rendezvous', {'id': dossier.id}) }}" class="btn btn-warning btn-sm">Modifier</a>
+                      <form action="{{ path('app_dossier_medical_delete', {'id': dossier.id}) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dossier médical ?');">
+                          <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dossier.id) }}">
+                          <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                      </form>
+                  </td>
+              </tr>
+{% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_dossier_medical_new') }}" class="btn btn-primary">Ajouter un Dossier Médical</a>
+    </div>
+{% endblock %}

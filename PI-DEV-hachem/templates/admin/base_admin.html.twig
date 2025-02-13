@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CareConnect{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚕️</text></svg>">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+    <!-- Sidebar (à gauche) -->
+    <div class="sidebar">
+        <h2>Espace Administrateur</h2>
+        <ul>
+            <li><a href="{{ path('evenement_index') }}"><i class="fas fa-calendar-alt"></i> Événements</a></li>
+            <li><a href="{{ path('formation_index') }}"><i class="fas fa-chalkboard-teacher"></i> Formations</a></li>
+        </ul>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="content">
+        {% block body %}{% endblock %}
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let profileBtn = document.querySelector(".profile-btn");
+            let dropdownMenu = document.querySelector(".dropdown-menu");
+
+            // Gestion du menu déroulant du profil
+            if (profileBtn) {
+                profileBtn.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    dropdownMenu.classList.toggle("d-none");
+                });
+
+                // Fermer le menu si on clique ailleurs
+                document.addEventListener("click", function (event) {
+                    if (!profileBtn.contains(event.target)) {
+                        dropdownMenu.classList.add("d-none");
+                    }
+                });
+            }
+        });
+    </script>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
