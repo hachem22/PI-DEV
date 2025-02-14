@@ -7,9 +7,11 @@ use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -74,9 +76,11 @@ class Utilisateur
     private ?MedecinSpecialite $medecinSpecilaite = null;
 
     #[ORM\ManyToOne(inversedBy: 'ListeUtilisateur')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "Le service est obligatoire.")]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Service $service = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $password = null;
 
     public function getId(): ?int
     {
@@ -180,5 +184,44 @@ class Utilisateur
     {
         $this->service = $service;
         return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(?string $password): static
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Returns the identifier used for authentication (e.g., email).
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->Email;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     * For now, we'll just return a default role.
+     *
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        // Return a default role for all users (ignored in authentication)
+        return ['ROLE_USER'];
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
     }
 }

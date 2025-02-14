@@ -18,9 +18,6 @@ class RendezVous
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(enumType: Rdvstatus::class)]
-    private ?Rdvstatus $status = null;
-
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $heure = null;
 
@@ -44,17 +41,7 @@ class RendezVous
         return $this;
     }
 
-    public function getStatus(): ?Rdvstatus
-    {
-        return $this->status;
-    }
 
-    public function setStatus(Rdvstatus $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
 
     public function getHeure(): ?\DateTimeInterface
     {

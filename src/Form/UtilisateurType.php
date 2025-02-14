@@ -39,7 +39,7 @@ class UtilisateurType extends AbstractType
             ])
             ->add('service', EntityType::class, [
                 'class' => Service::class,
-                'choice_label' => 'name', // Adjust based on the actual property name in Service entity
+                'choice_label' => 'Nom', // Adjust based on the actual property name in Service entity
                 'placeholder' => 'Select a service',
                 'required' => false, // Make it optional and controlled by JavaScript
                 'attr' => ['class' => 'js-service-field'] // JavaScript control
@@ -65,7 +65,7 @@ class UtilisateurType extends AbstractType
 
             // Hide service field unless the role is Medecin, Infirmier, or Responsable
             if (!isset($data['utilisateurRole']) || !in_array($data['utilisateurRole'], ['Medecin', 'Infirmier', 'Responsable'])) {
-                unset($data['service']);
+                $data['service'] = null;
                 $event->setData($data);
             }
 

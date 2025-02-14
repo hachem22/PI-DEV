@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repository;
+use App\Enum\UtilisateurRole;
 
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -16,6 +17,15 @@ class UtilisateurRepository extends ServiceEntityRepository
         parent::__construct($registry, Utilisateur::class);
     }
 
+    public function findMedecins(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.utilisateurRole = :role')
+            ->setParameter('role', UtilisateurRole::Medecin)
+            ->getQuery()
+            ->getResult();
+    }
+    
     //    /**
     //     * @return Utilisateur[] Returns an array of Utilisateur objects
     //     */
