@@ -27,8 +27,11 @@ class UtilisateurType extends AbstractType
             ->add('Tel', TextType::class)
             ->add('utilisateurRole', ChoiceType::class, [
                 'choices' => array_combine(
-                    array_map(fn($role) => $role->value, UtilisateurRole::cases()),
-                    UtilisateurRole::cases()
+                    array_map(
+                        fn($role) => $role->value,
+                        array_filter(UtilisateurRole::cases(), fn($role) => !in_array($role->value, ['Administrateur', 'Patient']))
+                    ),
+                    array_filter(UtilisateurRole::cases(), fn($role) => !in_array($role->value, ['Administrateur', 'Patient']))
                 ),
                 'choice_label' => fn($choice) => $choice->value,
                 'choice_value' => fn(?UtilisateurRole $role) => $role ? $role->value : null,
@@ -37,6 +40,7 @@ class UtilisateurType extends AbstractType
                     'class' => 'js-role-selector' // JavaScript will listen to this
                 ]
             ])
+
             ->add('service', EntityType::class, [
                 'class' => Service::class,
                 'choice_label' => 'Nom', // Adjust based on the actual property name in Service entity
