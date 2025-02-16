@@ -1,0 +1,16 @@
+{{ form_start(form) }}
+<div class="mb-3">
+    {{ form_label(form.description) }}
+    {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.type) }}
+    {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.categorie) }}
+    {{ form_widget(form.categorie, {'attr': {'class': 'form-select'}}) }}
+</div>
+<button type="submit" class="btn btn-success">{{ button_label }}</button>
+{{ form_end(form) }}

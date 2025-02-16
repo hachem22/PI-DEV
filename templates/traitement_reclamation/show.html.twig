@@ -1,0 +1,35 @@
+{% extends 'base3.html.twig' %}
+
+{% block title %}Détails du Traitement{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="fas fa-eye"></i> Détails du Traitement</h4>
+        </div>
+        
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>ID:</strong> {{ traitement.id }}</li>
+                <li class="list-group-item"><strong>Commentaire:</strong> {{ traitement.commentaire }}</li>
+                <li class="list-group-item"><strong>État:</strong> 
+                    <span class="badge 
+                        {% if traitement.etat.value == 'En cours' %}bg-warning text-dark
+                        {% elseif traitement.etat.value == 'Terminé' %}bg-success
+                        {% else %}bg-secondary{% endif %}">
+                        {{ traitement.etat.value }}
+                    </span>
+                </li>
+                <li class="list-group-item"><strong>Date:</strong> {{ traitement.dateTraitement|date('d/m/Y H:i') }}</li>
+            </ul>
+        </div>
+
+        <div class="card-footer text-center">
+            <a href="{{ path('app_traitement_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

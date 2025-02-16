@@ -1,0 +1,39 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Détails de la Réclamation{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-info-circle"></i> Détails de la Réclamation</h4>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>ID :</strong> {{ reclamation.id }}</li>
+                <li class="list-group-item"><strong>Description :</strong> {{ reclamation.description }}</li>
+                <li class="list-group-item"><strong>Type :</strong> {{ reclamation.type.value }}</li>
+                <li class="list-group-item">
+                    <strong>Statut :</strong> 
+                    <span class="badge {% if reclamation.statut.value == 'En attente' %}bg-warning{% elseif reclamation.statut.value == 'Traitée' %}bg-success{% else %}bg-secondary{% endif %}">
+                        {{ reclamation.statut.value }}
+                    </span>
+                </li>
+                <li class="list-group-item"><strong>Date de Création :</strong> {{ reclamation.datecreation|date('d/m/Y H:i') }}</li>
+                <li class="list-group-item"><strong>Catégorie :</strong> {{ reclamation.categorie.nom }}</li>
+            </ul>
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('reclamation_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+            <a href="{{ path('reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Modifier
+            </a>
+            <a href="{{ path('app_traitement_new', {'id': reclamation.id}) }}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Créer un Traitement
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

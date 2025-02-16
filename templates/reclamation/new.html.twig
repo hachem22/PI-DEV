@@ -1,0 +1,21 @@
+{% extends 'base1.html.twig' %}
+
+{% block title %}Créer une Réclamation{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="fas fa-plus-circle"></i> Nouvelle Réclamation</h4>
+        </div>
+        <div class="card-body">
+            {{ include('reclamation/_form.html.twig', {'button_label': 'Créer'}) }}
+        </div>
+        <div class="card-footer text-end">
+            <a href="{{ path('reclamation_index') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
