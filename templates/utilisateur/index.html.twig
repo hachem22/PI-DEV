@@ -1,0 +1,98 @@
+{% block title %}
+    Utilisateur index
+{% endblock %}
+
+{% block body %}
+    <h1>
+        Utilisateur index
+    </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nom
+                </th>
+                <th>
+                    Prenom
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Adress
+                </th>
+                <th>
+                    Tel
+                </th>
+                <th>
+                    Grade
+                </th>
+                <th>
+                    UtilisateurRole
+                </th>
+                <th>
+                    MedecinSpecilaite
+                </th>
+                <th>
+                    actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for utilisateur in utilisateurs %}
+                <tr>
+                    <td>
+                        {{ utilisateur.id }}
+                    </td>
+                    <td>
+                        {{ utilisateur.Nom }}
+                    </td>
+                    <td>
+                        {{ utilisateur.Prenom }}
+                    </td>
+                    <td>
+                        {{ utilisateur.Email }}
+                    </td>
+                    <td>
+                        {{ utilisateur.Adress }}
+                    </td>
+                    <td>
+                        {{ utilisateur.Tel }}
+                    </td>
+                    <td>
+                        {{ utilisateur.Grade }}
+                    </td>
+                    <td>
+                        {{ utilisateur.utilisateurRole is null ? 'NULL' : utilisateur.utilisateurRole|json_encode }}
+                    </td>
+                    <td>
+                        {{ utilisateur.medecinSpecilaite is null ? 'NULL' : utilisateur.medecinSpecilaite.value }}
+                    </td>
+
+                    <td>
+                        <a href="{{ path('app_utilisateur_show', {'id': utilisateur.id}) }}">
+                            show
+                        </a>
+                        <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}">
+                            edit
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="10">
+                        no records found
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_utilisateur_new') }}">
+        Create new
+    </a>
+{% endblock %}

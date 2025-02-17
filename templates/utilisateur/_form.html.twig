@@ -1,0 +1,61 @@
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_row(form.Nom) }}
+    {{ form_row(form.Prenom) }}
+    {{ form_row(form.Email) }}
+    {{ form_row(form.Adress) }}
+    {{ form_row(form.Tel) }}
+    
+    {# Utilisateur Role Field #}
+    {{ form_row(form.utilisateurRole, {
+        'attr': {'class': 'js-role-selector'}
+    }) }}
+
+    {# Service Field - Initially Hidden #}
+    <div id="service-field">
+        {{ form_row(form.service) }}
+    </div>
+
+    {# Medecin Fields - Initially Hidden #}
+    <div id="medecin-fields" style="display: none;">
+        {{ form_row(form.Grade) }}
+        {{ form_row(form.medecinSpecilaite) }}
+    </div>
+
+    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let roleSelector = document.querySelector('.js-role-selector');
+    let medecinFields = document.getElementById('medecin-fields');
+    let serviceField = document.getElementById('service-field');
+
+    function toggleFields() {
+        let selectedRole = roleSelector.value;
+
+        // Show/hide Medecin-specific fields
+        if (selectedRole === 'Medecin') { 
+            medecinFields.style.display = 'block';
+        } else {
+            medecinFields.style.display = 'none';
+            medecinFields.querySelectorAll('input, select').forEach(field => {
+                field.value = ''; // Reset values when hidden
+            });
+        }
+
+        // Show/hide Service field for Medecin, Infirmier, Responsable
+        if (['Medecin', 'Infirmier', 'Responsable'].includes(selectedRole)) {
+            serviceField.style.display = 'block';
+        } else {
+            serviceField.style.display = 'none';
+            serviceField.querySelector('select').value = ''; // Reset when hidden
+        }
+    }
+
+    // Run on page load (for edit forms)
+    toggleFields();
+
+    // Listen for changes
+    roleSelector.addEventListener('change', toggleFields);
+});
+</script>

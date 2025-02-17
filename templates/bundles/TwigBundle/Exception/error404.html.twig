@@ -1,0 +1,9 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'utilisateur/sidenav.html.twig"' %}
+{% block title %}Événement non trouvé{% endblock %}
+
+{% block body %}
+    <h1>Événement introuvable</h1>
+    <p>L'événement que vous recherchez n'existe pas ou a été supprimé. Veuillez vérifier l'ID et réessayer.</p>
+    <a href="{{ path('evenement_index') }}">Retour à la liste des événements</a>
+{% endblock %}
