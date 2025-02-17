@@ -24,9 +24,19 @@ class Service
     #[ORM\OneToMany(targetEntity: Utilisateur::class, mappedBy: 'service')]
     private Collection $ListeUtilisateur;
 
+    /**
+     * @var Collection<int, Chambre>
+     */
+    #[ORM\OneToMany(targetEntity: Chambre::class, mappedBy: 'position')]
+    private Collection $chambres;
+
+    
+
     public function __construct()
     {
         $this->ListeUtilisateur = new ArrayCollection();
+        $this->chambres = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -75,4 +85,36 @@ class Service
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Chambre>
+     */
+    public function getChambres(): Collection
+    {
+        return $this->chambres;
+    }
+
+    public function addChambre(Chambre $chambre): static
+    {
+        if (!$this->chambres->contains($chambre)) {
+            $this->chambres->add($chambre);
+            $chambre->setPosition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChambre(Chambre $chambre): static
+    {
+        if ($this->chambres->removeElement($chambre)) {
+            // set the owning side to null (unless already changed)
+            if ($chambre->getPosition() === $this) {
+                $chambre->setPosition(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

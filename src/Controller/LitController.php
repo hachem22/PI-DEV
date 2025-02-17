@@ -5,12 +5,14 @@ namespace App\Controller;
 use App\Entity\Lit;
 use App\Entity\Chambre;
 use App\Form\LitType;
+use App\Form\AffectationLitType;
 use App\Repository\LitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Enum\LitStatut;
 
 final class LitController extends AbstractController
 {
@@ -109,4 +111,41 @@ final class LitController extends AbstractController
             'chambre' => $chambre,
         ]);
     }
+    #[Route('/lit/affectation/{id}', name: 'lit.affecter', methods: ['GET', 'POST'])]
+public function affecterLit(Lit $lit, Request $request, EntityManagerInterface $manager): Response
+{
+    $form = $this->createForm(AffectationLitType::class, $lit);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $patient = $lit->getPatient();
+
+        // Vérifier et mettre à jour le statut du lit
+        if ($patient) {
+            $lit->setType('occupe');  // 'occupe' comme chaîne de caractères
+        } else {
+            $lit->setType('libre');   // 'libre' comme chaîne de caractères
+        }
+
+        $manager->flush();
+
+        $this->addFlash('success', 'Le lit a été mis à jour avec succès.');
+        return $this->redirectToRoute('app_lit');
+    }
+
+    return $this->render('lit/affectation.html.twig', [
+        'form' => $form->createView(),
+        'lit' => $lit,
+    ]);
+}
+
+    public function show(LitRepository $repository): Response
+{
+    return $this->render('lit/index.html.twig', [
+        'lits' => $repository->findAll(),
+        'typeLitLibre' => 'libre',   // Passer la chaîne 'libre'
+        'typeLitOccupe' => 'occupe', // Passer la chaîne 'occupe'
+    ]);
+}
+
 }

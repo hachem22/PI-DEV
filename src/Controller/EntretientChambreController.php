@@ -27,19 +27,28 @@ class EntretientChambreController extends AbstractController
         $entretient = new EntretientChambre();
         $form = $this->createForm(EntretientChambreType::class, $entretient);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
+            $chambre = $entretient->getChambre();
+            
+            if ($chambre) {
+                // Mise à jour du statut de la chambre à "occupee"
+                $chambre->setActive('maintenance');
+                $manager->persist($chambre);
+            }
+    
             $manager->persist($entretient);
             $manager->flush();
-
-            $this->addFlash('success', 'Entretien ajouté avec succès.');
+    
+            $this->addFlash('success', 'Entretien ajouté et chambre mise en "occupée".');
             return $this->redirectToRoute('app_entretient_chambre');
         }
-
+    
         return $this->render('entretient_chambre/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
+    
 
     #[Route('/entretient_chambre/edition/{id}', name: 'entretient_chambre.edit', methods: ['GET', 'POST'])]
     public function edit(EntretientChambre $entretient, Request $request, EntityManagerInterface $manager): Response

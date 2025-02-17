@@ -7,7 +7,7 @@
     <div class="card shadow-lg p-4 rounded-3">
         <h2 class="text-center mb-4">Créer un nouvel entretien de chambre</h2>
 
-        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
         <div class="mb-3">
             {{ form_label(form.type, 'Type d\'entretien', {'label_attr': {'class': 'form-label'}}) }}
@@ -23,13 +23,13 @@
 
         <div class="mb-3">
             {{ form_label(form.datedebut, 'Date de début', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.datedebut, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.datedebut, {'attr': {'class': 'form-control datetime-picker'}}) }}
             {{ form_errors(form.datedebut) }}
         </div>
 
         <div class="mb-3">
             {{ form_label(form.datefin, 'Date de fin', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.datefin, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.datefin, {'attr': {'class': 'form-control datetime-picker'}}) }}
             {{ form_errors(form.datefin) }}
         </div>
 

@@ -20,67 +20,77 @@ final class ChambreController extends AbstractController
     #[Route('/chambre', name: 'app_chambre')]
     public function index(ChambreRepository $repository): Response
     {
-
-        
         return $this->render('chambre/index.html.twig', [
             'chambres' => $repository->findAll()
         ]);
     }
-    #[Route('/chambre/nouveau','chambre.new',methods:['GET','POST'])]
-    public function new(Request $request,EntityManagerInterface $manager):Response
+
+    #[Route('/chambre/nouveau', name: 'chambre.new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $manager, ChambreRepository $repository): Response
     {
-        $chambre=new Chambre();
-        $form=$this->createForm(ChambreType::class,$chambre);
+        $chambre = new Chambre();
+        $form = $this->createForm(ChambreType::class, $chambre);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $chambre=$form->getData();
-            $manager->persist($chambre);
-            $manager->flush();
-            return $this->redirectToRoute('app_chambre', [], Response::HTTP_SEE_OTHER);
-        }
-        return $this->render('chambre/new.html.twig',[
-            'form'=> $form->createView()
-            
-        ]);
-    }
-    #[Route('/chambre/edition/{id}','chambre.edit',methods:['GET','POST'])]
-    public function edit(Chambre $chambre,EntityManagerInterface $manager,Request $request):Response{
-        $form=$this->createForm(ChambreType::class,$chambre);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $chambre=$form->getData();
-            
-            $manager->flush();
-            return $this->redirectToRoute('app_chambre', [], Response::HTTP_SEE_OTHER);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Vérification de l'unicité du numéro de chambre
+            if ($repository->findOneBy(['num' => $chambre->getNum()])) {
+                $this->addFlash('danger', 'Ce numéro de chambre existe déjà.');
+            } else {
+                $manager->persist($chambre);
+                $manager->flush();
+                $this->addFlash('success', 'Chambre ajoutée avec succès.');
+                return $this->redirectToRoute('app_chambre');
+            }
         }
 
-        return $this->render('chambre/edit.html.twig',[
-            
-            'form'=> $form->createView()
+        return $this->render('chambre/new.html.twig', [
+            'form' => $form->createView()
         ]);
-
-    
     }
-    #[Route('/chambre/suppresion/{id}','chambre.supprimer',methods:['GET'])]
-    public function delete(EntityManagerInterface $manager,Chambre $chambre):Response{
-        if(!$chambre){
-            $this->addFlash(
-                'success',
-                'chambre n est pas trouve'
-            );
-            return $this->redirectToRoute('app_chambre', [], Response::HTTP_SEE_OTHER);
+
+    #[Route('/chambre/edition/{id}', name: 'chambre.edit', methods: ['GET', 'POST'])]
+    public function edit(Chambre $chambre, Request $request, EntityManagerInterface $manager, ChambreRepository $repository): Response
+    {
+        $form = $this->createForm(ChambreType::class, $chambre);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Vérification de l'unicité du numéro de chambre sauf pour elle-même
+            $existingChambre = $repository->findOneBy(['num' => $chambre->getNum()]);
+            if ($existingChambre && $existingChambre !== $chambre) {
+                $this->addFlash('danger', 'Ce numéro de chambre est déjà utilisé.');
+            } else {
+                $manager->flush();
+                $this->addFlash('success', 'Chambre modifiée avec succès.');
+                return $this->redirectToRoute('app_chambre');
+            }
         }
-        $entretients = $chambre->getEntretient(); 
-        foreach ($entretients as $entretient) {
+
+        return $this->render('chambre/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/chambre/suppression/{id}', name: 'chambre.supprimer', methods: ['GET'])]
+    public function delete(EntityManagerInterface $manager, Chambre $chambre): Response
+    {
+        if (!$chambre) {
+            $this->addFlash('danger', 'Chambre non trouvée.');
+            return $this->redirectToRoute('app_chambre');
+        }
+
+        // Suppression des entretiens liés
+        foreach ($chambre->getEntretient() as $entretient) {
             $manager->remove($entretient);
         }
+
         $manager->remove($chambre);
         $manager->flush();
-        $this->addFlash(
-            'success',
-            'chambre supprimée'
-        );
-        return $this->redirectToRoute('app_chambre', [], Response::HTTP_SEE_OTHER);
+
+        $this->addFlash('success', 'Chambre supprimée avec succès.');
+        return $this->redirectToRoute('app_chambre');
+    
 
 
     }
@@ -108,7 +118,7 @@ public function addEntretient(
         $entretient->setChambre($chambre);
 
         // Mise à jour du statut de la chambre pendant l'entretien
-        $chambre->setActive('hors_service');
+        $chambre->setActive('occupee');
         $manager->persist($entretient);
         $manager->persist($chambre);
         $manager->flush();
@@ -154,6 +164,27 @@ public function visualisation(Chambre $chambre): Response
         'lits' => $litsArray
     ]);
 }
+#[Route('/chambre/{id}/lits', name: 'chambre.lits')]
+public function showLits(Chambre $chambre): Response
+{
+    $lits = $chambre->getLits();
+
+    return $this->render('lit/index.html.twig', [
+        'chambre' => $chambre,
+        'lits' => $lits,
+    ]);
+}
+#[Route('/chambre/{id}/service', name: 'chambre.service', methods: ['GET'])]
+    public function showChambre(Chambre $chambre): Response
+    {
+        $service = $chambre->getPosition();
+
+        return $this->render('chambre/index.html.twig', [
+            
+            'chambre' => $chambre,
+            'service' => $service,
+        ]);
+    }
 
 
 }

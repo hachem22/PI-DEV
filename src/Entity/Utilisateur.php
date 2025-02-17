@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
@@ -42,6 +44,17 @@ class Utilisateur
     #[ORM\ManyToOne(inversedBy: 'ListeUtilisateur')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Service $service = null;
+
+    /**
+     * @var Collection<int, Lit>
+     */
+    #[ORM\OneToMany(targetEntity: Lit::class, mappedBy: 'patient')]
+    private Collection $lits;
+
+    public function __construct()
+    {
+        $this->lits = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -152,6 +165,36 @@ class Utilisateur
     public function setService(?Service $service): static
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lit>
+     */
+    public function getLits(): Collection
+    {
+        return $this->lits;
+    }
+
+    public function addLit(Lit $lit): static
+    {
+        if (!$this->lits->contains($lit)) {
+            $this->lits->add($lit);
+            $lit->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLit(Lit $lit): static
+    {
+        if ($this->lits->removeElement($lit)) {
+            // set the owning side to null (unless already changed)
+            if ($lit->getPatient() === $this) {
+                $lit->setPatient(null);
+            }
+        }
 
         return $this;
     }

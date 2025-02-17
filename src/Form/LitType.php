@@ -18,9 +18,10 @@ class LitType extends AbstractType
         $builder
             ->add('num')
             ->add('type', ChoiceType::class, [
-                'choices' => LitStatut::cases(),
-                'choice_label' => fn(LitStatut $status) => $status->value,
-                'choice_value' => fn(?LitStatut $status) => $status?->value,
+                'choices' => [
+                    'Libre' => 'libre',
+                    'Occupé' => 'occupe',
+                ],
             ])
             ->add('chambre', EntityType::class, [
                 'class' => Chambre::class,

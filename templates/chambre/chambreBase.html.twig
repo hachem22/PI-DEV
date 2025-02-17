@@ -24,8 +24,8 @@
         <h2>Tableau de Bord</h2>
         <ul>
             <li><a href="{{ path('app_chambre') }}"><i class="fas fa-calendar-check"></i> Les chambres</a></li>
-            <li><a href="#"><i class="fas fa-file-medical"></i> Mon Dossier Médical</a></li>
-            <li><a href="#"><i class="fas fa-bell"></i> Notifications</a></li>
+            <li><a href="{{ path('app_lit') }}"><i class="fas fa-file-medical"></i> les lits</a></li>
+            <li><a href="{{ path('app_entretient_chambre') }}"><i class="fas fa-bell"></i> Entretitents</a></li>
             <li><a href="#"><i class="fas fa-user-md"></i> Trouver un Médecin</a></li>
         </ul>
     </div>
@@ -40,7 +40,7 @@
                 <div class="profile-dropdown">
                     <button class="profile-btn">
                         <img src="{{ asset('assets/images/lhech.jpg') }}" alt="Profil" class="profile-img">
-                        <span>Patient</span>
+                        <span>Responsable</span>
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <ul class="dropdown-menu">

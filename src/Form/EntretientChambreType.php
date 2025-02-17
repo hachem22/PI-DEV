@@ -27,6 +27,7 @@ class EntretientChambreType extends AbstractType
             ])
             ->add('datedebut', DateTimeType::class, [
                 'widget' => 'single_text',
+                
                 'label' => 'Date de début',
             ])
             ->add('datefin', DateTimeType::class, [
@@ -43,7 +44,7 @@ class EntretientChambreType extends AbstractType
             ->add('details')
             ->add('chambre', EntityType::class, [
                 'class' => Chambre::class,
-                'choice_label' => 'num', // Remplacez 'num' par une autre propriété si nécessaire
+                'choice_label' => 'num', 
                 'label' => 'Chambre associée',
                 'placeholder' => 'Sélectionnez une chambre',
             ]);
