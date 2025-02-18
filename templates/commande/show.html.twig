@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la commande{% endblock %}
+
+{% block body %}
+<div class="pharmacy-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1>Détails de la commande #{{ commande.id }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="pharmacy-content">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>Informations de la commande</h3>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Médicament</th>
+                                    <td>{{ commande.stockPharmacie.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Prix unitaire</th>
+                                    <td>{{ commande.stockPharmacie.prix }}€</td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <td>{{ (commande.stockPharmacie.prix * commande.quantite)|number_format(2, ',', ' ') }}€</td>
+                                </tr>
+                                <tr>
+                                    <th>Type de produit</th>
+                                    <td>{{ commande.stockPharmacie.type }}</td>
+                                </tr>
+                                {% if commande.stockPharmacie.image %}
+                                <tr>
+                                    <th>Image du produit</th>
+                                    <td>
+                                        <img src="{{ asset('uploads/images/' ~ commande.stockPharmacie.image) }}" 
+                                             alt="{{ commande.stockPharmacie.nom }}" 
+                                             class="img-thumbnail" 
+                                             style="max-width: 200px">
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                <tr>
+                                    <th>Quantité</th>
+                                    <td>{{ commande.quantite }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date de commande</th>
+                                    <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date de livraison prévue</th>
+                                    <td>{{ commande.dateLivraison|date('d/m/Y') }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Statut</th>
+                                    <td>
+                                        <span class="badge bg-{{ commande.statut == 'Livrée' ? 'success' : 
+                                            commande.statut == 'Annulée' ? 'danger' : 'warning' }}">
+                                            {{ commande.statut }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ path('app_commande_index') }}" class="btn btn-secondary">
+                        <i class="fa fa-arrow-left me-1"></i>Retour à la liste
+                    </a>
+                    
+                    {% if not commande.isLivree %}
+                        <a href="{{ path('app_commande_edit', {'id': commande.id}) }}" class="btn btn-primary">
+                            <i class="fa fa-edit me-1"></i>Modifier
+                        </a>
+                        
+                        <form method="post" action="{{ path('app_commande_delete', {'id': commande.id}) }}" 
+                              style="display: inline-block"
+                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commande.id) }}">
+                            <button class="btn btn-danger">
+                                <i class="fa fa-trash me-1"></i>Supprimer
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

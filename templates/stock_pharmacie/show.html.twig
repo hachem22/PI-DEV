@@ -1,0 +1,50 @@
+{% extends "stock_pharmacie/navbar.html.twig" %}
+
+{% block content %}
+    <div class="content-wrapper" style="margin-top:50px;">
+        <div class="container-xxl flex-grow-1 container-p-y" style="margin-left:500;">
+            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">UI Elements /</span> Détails du médicament</h4>
+            
+            <div class="row mb-5" >
+                <div class="col-md-6 col-lg-4 mb-3" style="width:40%">
+                    <div class="card h-100">
+                        {% if stock_pharmacie.image %}
+                            <img class="card-img-top" src="{{ asset('uploads/images/' ~ stock_pharmacie.image) }}" alt="{{ stock_pharmacie.nom }}" />
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ stock_pharmacie.nom }}</h5>
+                            <p class="card-text"><strong>Type:</strong> {{ stock_pharmacie.type }}</p>
+                            <p class="card-text"><strong>Prix:</strong> {{ stock_pharmacie.prix|number_format(2, ',', ' ') }} €</p>
+                            <p class="card-text"><strong>Quantité:</strong> {{ stock_pharmacie.quantite }}</p>
+                            <p class="card-text"><strong>Statut:</strong> 
+                                <span class="badge bg-{{ stock_pharmacie.statu ? 'success' : 'danger' }}">
+                                    {{ stock_pharmacie.statu ? 'En stock' : 'Rupture' }}
+                                </span>
+                            </p>
+                            {% if stock_pharmacie.details %}
+                                <p class="card-text"><strong>Détails:</strong> {{ stock_pharmacie.details }}</p>
+                            {% endif %}
+                            <p class="card-text"><strong>Description:</strong> {{ stock_pharmacie.description }}</p>
+                            
+                            <a href="{{ path('app_stock_pharmacie_index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Retour
+                            </a>
+                            <a href="{{ path('app_stock_pharmacie_edit', {'id': stock_pharmacie.id}) }}" class="btn btn-warning">
+                                <i class="fas fa-edit me-1"></i> Modifier
+                            </a>
+                            <form method="post" action="{{ path('app_stock_pharmacie_delete', {'id': stock_pharmacie.id}) }}" style="display: inline-block" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock_pharmacie.id) }}">
+                                <button class="btn btn-danger">
+                                    <i class="fas fa-trash me-1"></i> Supprimer
+                                </button>
+                            </form>
+                            <a href="{{ path('app_commande_new_with_product', {'id': stock_pharmacie.id}) }}" class="btn btn-success">
+                                <i class="fa fa-shopping-cart me-1"></i> Commander
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

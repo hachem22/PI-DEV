@@ -1,0 +1,101 @@
+<!-- Topbar -->
+<div class="topbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-5 col-12">
+                <ul class="top-link">
+                    <li><a href="{{ path('app_home') }}">Accueil</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-6 col-md-7 col-12">
+                <ul class="top-contact">
+                    <li><i class="fa fa-phone"></i>+216 123 456 789</li>
+                    <li><i class="fa fa-envelope"></i><a href="mailto:contact@careconnect.com">contact@careconnect.com</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Header Inner -->
+<div class="header-inner">
+    <div class="container">
+        <div class="inner">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-3 col-12">
+                    <div class="logo">
+                        <a href="{{ path('app_home') }}">
+                            <img src="{{ asset('img/1.png') }}" alt="CareConnect" style="height: 60px;">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-12">
+                    <div class="main-menu">
+                        <nav class="navigation">
+                            <ul class="nav menu">
+                                <li {% if app.request.get('_route') == 'app_home' %}class="active"{% endif %}>
+                                    <a href="{{ path('app_home') }}">Accueil</a>
+                                </li>
+                                <li {% if app.request.get('_route') starts with 'app_rendez_vous' %}class="active"{% endif %}>
+                                    <a href="#">Rendez-vous</a>
+                                </li>
+                                <li class="menu-item-has-children">
+                                    <a href="#">Pharmacie</a>
+                                    <ul class="submenu">
+                                        <li><a href="{{ path('app_catalogue_index') }}">Catalogue</a></li>
+                                        <li><a href="{{ path('app_stock_pharmacie_index') }}">Gestion Stock</a></li>
+                                        <li><a href="{{ path('app_stock_pharmacie_new') }}">Ajouter un produit</a></li>
+                                        <li><a href="{{ path('app_commande_index') }}">Commandes</a></li>
+                                        <li><a href="{{ path('app_stock_pharmacie_livraisons') }}">Livraisons</a></li>
+                                    </ul>
+                                </li>
+                                <li {% if app.request.get('_route') starts with 'app_evenement' %}class="active"{% endif %}>
+                                    <a href="#">Événements</a>
+                                </li>
+                                <li {% if app.request.get('_route') starts with 'app_reclamation' %}class="active"{% endif %}>
+                                    <a href="#">Réclamations</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-12">
+                    <div class="get-quote">
+                        <a href="#" class="btn">Prendre RDV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Style pour le hover du dropdown */
+.navbar .dropdown:hover > .dropdown-menu {
+    display: block;
+}
+
+.navbar .dropdown-menu {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+.navbar .dropdown-item i {
+    width: 20px;
+    text-align: center;
+}
+</style> 
