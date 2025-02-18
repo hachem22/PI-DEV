@@ -1,10 +1,13 @@
 <?php
 
+// src/Entity/Utilisateur.php
+
 namespace App\Entity;
 
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -81,6 +84,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $resetTokenExpiresAt = null;
 
     public function getId(): ?int
     {
@@ -197,6 +206,28 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+        return $this;
+    }
+
+    public function getResetTokenExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->resetTokenExpiresAt;
+    }
+
+    public function setResetTokenExpiresAt(?\DateTimeInterface $resetTokenExpiresAt): static
+    {
+        $this->resetTokenExpiresAt = $resetTokenExpiresAt;
+        return $this;
+    }
+
     /**
      * Returns the identifier used for authentication (e.g., email).
      */
@@ -207,14 +238,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Returns the roles granted to the user.
-     * For now, we'll just return a default role.
-     *
-     * @return string[]
      */
     public function getRoles(): array
     {
-        // Return a default role for all users (ignored in authentication)
-        return ['ROLE_USER'];
+        // Return the role from the utilisateurRole enum
+        return [$this->utilisateurRole->value];
     }
 
     /**

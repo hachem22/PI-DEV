@@ -1,26 +1,31 @@
 security:
     enable_authenticator_manager: true
+
+    # Password Hasher (Plain Text)
     password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'plaintext' # Use plain text passwords for now
+        App\Entity\Utilisateur: plaintext
+
+    # User Provider
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\Utilisateur
-                property: Email
+                property: Email # Use the 'Email' field to load users
+
+    # Firewalls
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
         main:
-            lazy: true
-            provider: app_user_provider
+            pattern: ^/
             form_login:
-                login_path: app_login
-                check_path: app_login
-                default_target_path: app_utilisateur_index
+                login_path: app_login # Route to the login page
+                check_path: app_login # Route where the login form is submitted
+                enable_csrf: true # Enable CSRF protection
+                default_target_path: app_utilisateur_index # Redirect to this route after successful login
             logout:
-                path: app_logout
-                target: app_login
+                path: app_logout # Route to log out
+                target: app_login # Redirect to this route after logout
+            lazy: true # Allow anonymous access
+
+    # Access Control
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/, roles: ROLE_USER } # Allow access to all authenticated users
+        - { path: ^/, roles: PUBLIC_ACCESS } # Allow access to all routes for everyone
