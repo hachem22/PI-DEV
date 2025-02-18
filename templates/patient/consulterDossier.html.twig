@@ -1,0 +1,33 @@
+{% extends 'patient/baseRendezVous.html.twig' %}
+
+{% block title %}Consulter Dossier Médical{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h1 class="mb-4 text-center text-primary">Dossier Médical de {{ dossierMedical.patient.nom }}</h1>
+
+            <div class="mb-3">
+                <h5>ID : {{ dossierMedical.id }}</h5>
+                <p><strong>Patient :</strong> {{ dossierMedical.patient.nom }}</p>
+                <p><strong>Groupe Sanguin :</strong> {{ dossierMedical.GroupeSanguin }}</p>
+                <p><strong>Allergies :</strong> {{ dossierMedical.Allergies }}</p>
+                <p><strong>Vaccinations :</strong> {{ dossierMedical.Vaccinations }}</p>
+            </div>
+
+            <div class="text-center">
+                <a href="{{ path('app_dossier_medical_Mon_dossier_medical') }}" class="btn btn-primary">Retour à la liste</a>
+            </div>
+        </div>
+    </div>
+
+    {# Ajout des styles personnalisés #}
+    <style>
+        .card {
+            border-radius: 10px;
+        }
+        .text-primary {
+            color: #007bff; /* Assurez-vous que cela correspond à votre thème */
+        }
+    </style>
+{% endblock %}

@@ -3,16 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Utilisateur;
-use App\Entity\Service;
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UtilisateurType extends AbstractType
@@ -20,11 +15,12 @@ class UtilisateurType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Nom', TextType::class)
-            ->add('Prenom', TextType::class)
-            ->add('Email', TextType::class)
-            ->add('Adress', TextType::class)
-            ->add('Tel', TextType::class)
+            ->add('Nom')
+            ->add('Prenom')
+            ->add('Email')
+            ->add('Adress')
+            ->add('Tel')
+            ->add('Grade')
             ->add('utilisateurRole', ChoiceType::class, [
                 'choices' => array_combine(
                     array_map(fn($role) => $role->value, UtilisateurRole::cases()),
@@ -32,21 +28,6 @@ class UtilisateurType extends AbstractType
                 ),
                 'choice_label' => fn($choice) => $choice->value,
                 'choice_value' => fn(?UtilisateurRole $role) => $role ? $role->value : null,
-                'mapped' => true,
-                'attr' => [
-                    'class' => 'js-role-selector' // JavaScript will listen to this
-                ]
-            ])
-            ->add('service', EntityType::class, [
-                'class' => Service::class,
-                'choice_label' => 'name', // Adjust based on the actual property name in Service entity
-                'placeholder' => 'Select a service',
-                'required' => false, // Make it optional and controlled by JavaScript
-                'attr' => ['class' => 'js-service-field'] // JavaScript control
-            ])
-            ->add('Grade', TextType::class, [
-                'required' => false,
-                'attr' => ['class' => 'medecin-field']
             ])
             ->add('medecinSpecilaite', ChoiceType::class, [
                 'choices' => array_combine(
@@ -55,26 +36,7 @@ class UtilisateurType extends AbstractType
                 ),
                 'choice_label' => fn($choice) => $choice->value,
                 'choice_value' => fn(?MedecinSpecialite $specialite) => $specialite ? $specialite->value : null,
-                'required' => false,
-                'attr' => ['class' => 'medecin-field']
             ]);
-
-        // Handle dynamic form update when the role is changed
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $data = $event->getData();
-
-            // Hide service field unless the role is Medecin, Infirmier, or Responsable
-            if (!isset($data['utilisateurRole']) || !in_array($data['utilisateurRole'], ['Medecin', 'Infirmier', 'Responsable'])) {
-                unset($data['service']);
-                $event->setData($data);
-            }
-
-            // Hide Grade and MedecinSpecialite unless the role is "Medecin"
-            if (!isset($data['utilisateurRole']) || $data['utilisateurRole'] !== 'Medecin') {
-                unset($data['Grade'], $data['medecinSpecilaite']);
-                $event->setData($data);
-            }
-        });
     }
 
     public function configureOptions(OptionsResolver $resolver): void

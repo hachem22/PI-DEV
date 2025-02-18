@@ -1,0 +1,52 @@
+{% extends 'dossier_medical/BaseDossierMedical.html.twig' %}
+
+{% block title %}Visites du Dossier Médical - {{ dossierMedical.id }}{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h1 class="mb-4 text-center text-primary">Visites du Dossier Médical - {{ dossierMedical.id }}</h1>
+
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{{ path('app_dossier_medical_index') }}" class="btn btn-primary">Retour à la liste</a>
+            </div>
+
+            {# Tableau des visites #}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Date de la visite</th>
+                            <th>Diagnostic</th>
+                            <th>Ordonnance</th>
+                            <th>Certificat</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for visite in visites %}
+                            <tr class="align-middle">
+                                <td>{{ visite.id }}</td>
+                                <td>{{ visite.dateVisite|date('d/m/Y') }}</td>
+                                <td>{{ visite.diagnostic }}</td>
+                                <td>{{ visite.ordonnace }}</td>
+                                <td>{{ visite.ceteficat }}</td>
+                                <td>
+                                    <a href="#" class="btn btn-info btn-sm">Détails</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="fas fa-calendar-times fa-2x"></i><br>
+                                    Aucune visite trouvée.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

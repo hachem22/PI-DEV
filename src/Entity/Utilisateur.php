@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
@@ -17,67 +19,47 @@ class Utilisateur
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-        minMessage: "Le nom doit contenir au moins {{ limit }} caractères.",
-        maxMessage: "Le nom ne doit pas dépasser {{ limit }} caractères."
-    )]
     private ?string $Nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
-    #[Assert\Length(
-        min: 2,
-        max: 50,
-        minMessage: "Le prénom doit contenir au moins {{ limit }} caractères.",
-        maxMessage: "Le prénom ne doit pas dépasser {{ limit }} caractères."
-    )]
     private ?string $Prenom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'email est obligatoire.")]
-    #[Assert\Email(message: "Veuillez entrer une adresse email valide.")]
     private ?string $Email = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "L'adresse est obligatoire.")]
-    #[Assert\Length(
-        min: 5,
-        max: 255,
-        minMessage: "L'adresse doit contenir au moins {{ limit }} caractères.",
-        maxMessage: "L'adresse ne doit pas dépasser {{ limit }} caractères."
-    )]
     private ?string $Adress = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le numéro de téléphone est obligatoire.")]
-    #[Assert\Regex(
-        pattern: "/^\d{8}$/",
-        message: "Le numéro de téléphone doit contenir exactement 8 chiffres."
-    )]
     private ?int $Tel = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\Length(
-        max: 100,
-        maxMessage: "Le grade ne doit pas dépasser {{ limit }} caractères."
-    )]
+    #[ORM\Column(length: 255)]
     private ?string $Grade = null;
 
     #[ORM\Column(enumType: UtilisateurRole::class)]
-    #[Assert\NotBlank(message: "Le rôle utilisateur est obligatoire.")]
     private ?UtilisateurRole $utilisateurRole = null;
 
-    #[ORM\Column(enumType: MedecinSpecialite::class, nullable: true)]
+    #[ORM\Column(enumType: MedecinSpecialite::class)]
     private ?MedecinSpecialite $medecinSpecilaite = null;
 
     #[ORM\ManyToOne(inversedBy: 'ListeUtilisateur')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "Le service est obligatoire.")]
     private ?Service $service = null;
 
+    #[ORM\ManyToOne(inversedBy: 'Service')]
+    private ?RendezVous $rendezVous = null;
+
+    /**
+     * @var Collection<int, Planning>
+     */
+    #[ORM\OneToMany(targetEntity: Planning::class, mappedBy: 'Medecin')]
+    private Collection $plannings;
+
+    public function __construct()
+    {
+        $this->plannings = new ArrayCollection();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +73,7 @@ class Utilisateur
     public function setNom(string $Nom): static
     {
         $this->Nom = $Nom;
+
         return $this;
     }
 
@@ -102,6 +85,7 @@ class Utilisateur
     public function setPrenom(string $Prenom): static
     {
         $this->Prenom = $Prenom;
+
         return $this;
     }
 
@@ -113,6 +97,7 @@ class Utilisateur
     public function setEmail(string $Email): static
     {
         $this->Email = $Email;
+
         return $this;
     }
 
@@ -124,6 +109,7 @@ class Utilisateur
     public function setAdress(string $Adress): static
     {
         $this->Adress = $Adress;
+
         return $this;
     }
 
@@ -135,6 +121,7 @@ class Utilisateur
     public function setTel(int $Tel): static
     {
         $this->Tel = $Tel;
+
         return $this;
     }
 
@@ -146,6 +133,7 @@ class Utilisateur
     public function setGrade(string $Grade): static
     {
         $this->Grade = $Grade;
+
         return $this;
     }
 
@@ -157,6 +145,7 @@ class Utilisateur
     public function setUtilisateurRole(UtilisateurRole $utilisateurRole): static
     {
         $this->utilisateurRole = $utilisateurRole;
+
         return $this;
     }
 
@@ -165,9 +154,10 @@ class Utilisateur
         return $this->medecinSpecilaite;
     }
 
-    public function setMedecinSpecilaite(?MedecinSpecialite $medecinSpecilaite): static
+    public function setMedecinSpecilaite(MedecinSpecialite $medecinSpecilaite): static
     {
         $this->medecinSpecilaite = $medecinSpecilaite;
+
         return $this;
     }
 
@@ -179,6 +169,49 @@ class Utilisateur
     public function setService(?Service $service): static
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getRendezVous(): ?RendezVous
+    {
+        return $this->rendezVous;
+    }
+
+    public function setRendezVous(?RendezVous $rendezVous): static
+    {
+        $this->rendezVous = $rendezVous;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Planning>
+     */
+    public function getPlannings(): Collection
+    {
+        return $this->plannings;
+    }
+
+    public function addPlanning(Planning $planning): static
+    {
+        if (!$this->plannings->contains($planning)) {
+            $this->plannings->add($planning);
+            $planning->setMedecin($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlanning(Planning $planning): static
+    {
+        if ($this->plannings->removeElement($planning)) {
+            // set the owning side to null (unless already changed)
+            if ($planning->getMedecin() === $this) {
+                $planning->setMedecin(null);
+            }
+        }
+
         return $this;
     }
 }

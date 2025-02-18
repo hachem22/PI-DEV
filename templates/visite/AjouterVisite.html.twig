@@ -1,0 +1,118 @@
+{% extends 'visite/BaseVisite.html.twig' %}
+
+{% block title %}{{ form.vars.value is not null ? 'Modifier' : 'Ajouter' }} une Visite{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>{{ form.vars.value is not null ? 'Modifier' : 'Ajouter' }} une Visite</h1>
+
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+        
+        <div class="mb-3">
+            {{ form_label(form.dateVisite, 'Date de la visite', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.dateVisite, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dateVisite) }}
+        </div>
+
+        <div class="mb-3">
+            <label for="diagnostic">Diagnostic</label>
+            <select id="diagnostic-keywords" class="form-control">
+                <option value="">Sélectionnez un mot-clé</option>
+                <option value="Diabète">Diabète</option>
+                <option value="Hypertension">Hypertension</option>
+                <option value="Asthme">Asthme</option>
+                <!-- Ajoutez d'autres mots-clés ici -->
+            </select>
+            <textarea id="diagnostic-output" class="form-control mt-2" rows="3" readonly></textarea>
+            <button type="button" id="regenerate-diagnostic" class="btn btn-secondary mt-2">Régénérer</button>
+            <input type="text" id="manual-diagnostic" class="form-control mt-2" placeholder="Ou écrivez manuellement" />
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.ordonnace, 'Ordonnance', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.ordonnace, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.ordonnace) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.ceteficat, 'Certificat', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.ceteficat, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.ceteficat) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.Rdv, 'Rendez-vous associé', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.Rdv, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.Rdv) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.dossierMedical, 'Dossier Médical associé', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.dossierMedical, {'attr': {'class': 'form-control'}}) }}
+            {{ form_errors(form.dossierMedical) }}
+        </div>
+
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+        
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const diagnosticKeywords = document.getElementById('diagnostic-keywords');
+            const diagnosticOutput = document.getElementById('diagnostic-output');
+            const regenerateButton = document.getElementById('regenerate-diagnostic');
+            const manualDiagnostic = document.getElementById('manual-diagnostic');
+
+            diagnosticKeywords.addEventListener('change', function() {
+                const selectedKeyword = this.value;
+                if (selectedKeyword) {
+                    // Appel à l'API d'IA pour générer un diagnostic
+                    fetch(`https://api.example.com/generate-diagnostic?keyword=${selectedKeyword}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer YOUR_API_KEY' // Remplacez par votre clé API
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur de réseau');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        diagnosticOutput.value = data.diagnostic; // Affiche le diagnostic généré
+                    })
+                    .catch(error => console.error('Erreur lors de la génération du diagnostic:', error));
+                } else {
+                    diagnosticOutput.value = ''; // Réinitialiser si aucun mot-clé sélectionné
+                }
+            });
+
+            regenerateButton.addEventListener('click', function() {
+                const selectedKeyword = diagnosticKeywords.value;
+                if (selectedKeyword) {
+                    // Régénérer le diagnostic
+                    fetch(`https://api.example.com/regenerate-diagnostic?keyword=${selectedKeyword}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer YOUR_API_KEY' // Remplacez par votre clé API
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur de réseau');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        diagnosticOutput.value = data.diagnostic; // Mettre à jour le diagnostic
+                    })
+                    .catch(error => console.error('Erreur lors de la régénération du diagnostic:', error));
+                }
+            });
+        });
+    </script>
+{% endblock %}

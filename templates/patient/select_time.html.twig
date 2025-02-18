@@ -1,0 +1,26 @@
+{% extends 'patient/baseRendezVous.html.twig' %}
+
+{% block title %}Sélectionner une heure{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4">Choisissez une heure pour le {{ rendezVous.date|date('d/m/Y') }}</h2>
+    
+    <form method="POST" action="{{ path('valider_temps_rendezvous', {'id': rendezVous.id}) }}">
+        <div class="row">
+            {% for heure in heuresDisponibles %}
+                <div class="col-3 mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="heure_selectionnee" 
+                               id="heure{{ loop.index }}" value="{{ heure }}" required>
+                        <label class="form-check-label" for="heure{{ loop.index }}">{{ heure }}</label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <button type="submit" class="btn btn-success">Confirmer l'heure</button>
+        <a href="{{ path('gere_rendezvous') }}" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endblock %}

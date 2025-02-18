@@ -1,0 +1,56 @@
+{# templates/dossier_medical/AjouterDossier.html.twig #}
+{% extends 'dossier_medical/BaseDossierMedical.html.twig' %}
+
+{% block title %}Ajouter un Dossier Médical{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Ajouter un Dossier Médical</h1>
+
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+            <div class="mb-3">
+                {{ form_label(form.Groupe_sanguin, 'Groupe Sanguin', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.Groupe_sanguin, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.Groupe_sanguin) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Allergies, 'Allergies', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.Allergies, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.Allergies) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Vaccinations, 'Vaccinations', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.Vaccinations, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.Vaccinations) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Antecedents_medicaux, 'Antécédents Médicaux', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.Antecedents_medicaux, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.Antecedents_medicaux) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Traitements_en_cours, 'Traitements en Cours', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.Traitements_en_cours, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.Traitements_en_cours) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.Remarques, 'Remarques', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.Remarques, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.Remarques) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(form.patient, 'Patient', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.patient, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.patient) }}
+            </div>
+
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

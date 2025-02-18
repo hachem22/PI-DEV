@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CareConnect{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚕️</text></svg>">
+
+    <!-- Bootstrap CSS -->
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <style>
+        .dropdown-menu {
+            margin-left: 5px; /* Décalage vers la droite */
+        }
+    </style>
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('assets/images/logo2.png') }}" alt="CareConnect" width="60" height="60">
+            CareConnect
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('Home_Patient')}}"><i class="fa-solid fa-house"></i> Accueil</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-calendar-alt"></i> Rendez-Vous
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                        <li><a class="dropdown-item" href="{{ path('demande_rendezvous')}}"><i class="fas fa-calendar-check"></i> Demande Rendez-vous</a></li>
+                        <li><a class="dropdown-item" href="{{ path('ListRendezVous')}}"><i class="fas fa-calendar-check"></i> Mes Rendez-vous</a></li>
+                        <li><a class="dropdown-item" href="{{ path('app_dossier_medical_Mon_dossier_medical')}}"><i class="fas fa-file-medical"></i> Mon Dossier Médical</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-file-medical"></i> Mes Visites</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="eventsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-bell"></i> Événements
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-calendar-day"></i> Événements à venir</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-calendar-check"></i> Historique des Événements</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="complaintsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-comment-dots"></i> Réclamations
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="complaintsDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-file-alt"></i> Soumettre une Réclamation</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-history"></i> Suivre mes Réclamations</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="dropdown">
+                <button class="btn btn-light d-flex align-items-center dropdown-toggle" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ asset('assets/images/lhech.jpg') }}" alt="Profil" class="profile-img rounded-circle" width="40" height="40">
+                    <span class="ms-2">Patient</span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> Mon Profil</a></li>
+                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+        {% block body %}
+        {% endblock %}
+    </div>
+
+    {% block javascripts %}
+    <!-- Scripts --> 
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+    let profileBtn = document.querySelector("#profileDropdown");
+    let dropdownMenu = document.querySelector("[aria-labelledby='profileDropdown']");
+
+    if (profileBtn && dropdownMenu) {
+        // Gestion du menu déroulant du profil
+        profileBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
+            dropdownMenu.classList.toggle("d-none");
+        });
+
+        // Fermer le menu si on clique ailleurs
+        document.addEventListener("click", function (event) {
+            if (!profileBtn.contains(event.target)) {
+                dropdownMenu.classList.add("d-none");
+            }
+        });
+    } else {
+        console.error("Éléments du menu déroulant introuvables.");
+    }
+});
+    </script>
+
+    {% endblock %}
+</body>
+</html>
