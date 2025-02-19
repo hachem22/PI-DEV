@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CareConnect - Modifier la commande{% endblock %}
+
+{% block body %}
+<!-- En-tête -->
+<div class="pharmacy-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_commande_index') }}">Commandes</a></li>
+                        <li class="breadcrumb-item active">Modifier la commande #{{ commande.id }}</li>
+                    </ol>
+                </nav>
+                <h1>Modifier la commande</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="edit-order-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Formulaire de modification -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'edit-form'}}) }}
+                            {{ form_widget(form, {'attr': {'class': 'mb-3'}}) }}
+
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="{{ path('app_commande_index') }}" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left me-2"></i>Retour à la liste
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-save me-2"></i>Enregistrer les modifications
+                                </button>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <!-- Résumé de la commande -->
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Résumé de la commande</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="order-info">
+                            <div class="info-item">
+                                <span class="label">Numéro de commande:</span>
+                                <span class="value">#{{ commande.id }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Produit:</span>
+                                <span class="value">{{ commande.stockPharmacie.nom }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Prix unitaire:</span>
+                                <span class="value">{{ commande.stockPharmacie.prix }}€</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Total:</span>
+                                <span class="value fw-bold">{{ (commande.stockPharmacie.prix * commande.quantite)|number_format(2, ',', ' ') }}€</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Statut actuel:</span>
+                                <span class="badge bg-{{ 
+                                    commande.statut == 'Livrée' ? 'success' : 
+                                    (commande.statut == 'En attente' ? 'warning' : 'danger') 
+                                }}">
+                                    {{ commande.statut }}
+                                </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Date de création:</span>
+                                <span class="value">{{ commande.dateCommande|date('d/m/Y H:i') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations sur le produit -->
+                <div class="card shadow-sm mt-3">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Détails du produit</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if commande.stockPharmacie.image %}
+                            <img src="{{ asset('uploads/images/' ~ commande.stockPharmacie.image) }}" 
+                                 alt="{{ commande.stockPharmacie.nom }}" 
+                                 class="img-fluid mb-3 rounded">
+                        {% endif %}
+                        <div class="product-info">
+                            <div class="info-item">
+                                <span class="label">Stock disponible:</span>
+                                <span class="value">{{ commande.stockPharmacie.quantite }} unités</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Type:</span>
+                                <span class="badge bg-info">{{ commande.stockPharmacie.type }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.edit-order-section {
+    padding: 2rem 0;
+    background-color: #f8f9fa;
+}
+
+.pharmacy-header {
+    background-color: #fff;
+    padding: 2rem 0;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 2rem;
+}
+
+.breadcrumb {
+    margin-bottom: 0.5rem;
+}
+
+.card {
+    border: none;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem;
+}
+
+.edit-form label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.info-item .label {
+    font-weight: 500;
+    color: #6c757d;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.info-item .value {
+    color: #212529;
+}
+
+.btn {
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+}
+
+.badge {
+    padding: 0.5rem 0.75rem;
+    font-weight: 500;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Animations */
+.card {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-top: 2rem;
+    }
+}
+</style>
+{% endblock %}

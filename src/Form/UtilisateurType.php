@@ -14,6 +14,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class UtilisateurType extends AbstractType
 {
@@ -61,6 +63,11 @@ class UtilisateurType extends AbstractType
                 'choice_value' => fn(?MedecinSpecialite $specialite) => $specialite ? $specialite->value : null,
                 'required' => false,
                 'attr' => ['class' => 'medecin-field']
+            ])
+            ->add('image', FileType::class, [
+                'label' => 'Profile Image',
+                'required' => false, // The image is optional
+                'mapped' => false, // This field is not mapped to the entity
             ]);
 
         // Handle dynamic form update when the role is changed

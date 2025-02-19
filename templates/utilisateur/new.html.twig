@@ -57,47 +57,42 @@
                                         </small>
                                     </div>
                                     <div class="card-body">
-                                        {{ form_start(form, {'attr': {'novalidate': 'novalidate' }}
-                                        ) }}
+                                        {# Add enctype="multipart/form-data" to the form #}
+                                        {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'enctype': 'multipart/form-data'}}) }}
                                         <div class="mb-6">
                                             <label class="form-label" for="form.Nom">
                                                 <i class="bx bx-user"></i>
                                                 Nom
                                             </label>
-                                            {{ form_row(form.Nom, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.Nom, {'attr': {'class': 'form-control'}}) }}
                                         </div>
                                         <div class="mb-6">
                                             <label class="form-label" for="form.Prenom">
                                                 <i class="bx bx-user"></i>
                                                 Prénom
                                             </label>
-                                            {{ form_row(form.Prenom, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.Prenom, {'attr': {'class': 'form-control'}}) }}
                                         </div>
                                         <div class="mb-6">
                                             <label class="form-label" for="form.Email">
                                                 <i class="bx bx-envelope"></i>
                                                 Email
                                             </label>
-                                            {{ form_row(form.Email, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.Email, {'attr': {'class': 'form-control'}}) }}
                                         </div>
                                         <div class="mb-6">
                                             <label class="form-label" for="form.Adress">
                                                 <i class="bx bx-home"></i>
                                                 Adresse
                                             </label>
-                                            {{ form_row(form.Adress, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.Adress, {'attr': {'class': 'form-control'}}) }}
                                         </div>
                                         <div class="mb-6">
                                             <label class="form-label" for="form.Tel">
                                                 <i class="bx bx-phone"></i>
                                                 Téléphone
                                             </label>
-                                            {{ form_row(form.Tel, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.Tel, {'attr': {'class': 'form-control'}}) }}
                                         </div>
 
                                         {# Utilisateur Role Field #}
@@ -107,8 +102,8 @@
                                                 Rôle
                                             </label>
                                             {{ form_row(form.utilisateurRole, {
-                          'attr': {'class': 'form-control js-role-selector'}
-                      }) }}
+                                                'attr': {'class': 'form-control js-role-selector'}
+                                            }) }}
                                         </div>
 
                                         {# Service Field - Initially Hidden #}
@@ -117,8 +112,7 @@
                                                 <i class="bx bx-building"></i>
                                                 Service
                                             </label>
-                                            {{ form_row(form.service, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.service, {'attr': {'class': 'form-control'}}) }}
                                         </div>
 
                                         {# Medecin Fields - Initially Hidden #}
@@ -127,14 +121,21 @@
                                                 <i class="bx bx-award"></i>
                                                 Grade
                                             </label>
-                                            {{ form_row(form.Grade, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.Grade, {'attr': {'class': 'form-control'}}) }}
                                             <label class="form-label" for="form.medecinSpecilaite">
                                                 <i class="bx bx-plus-medical"></i>
                                                 Spécialité
                                             </label>
-                                            {{ form_row(form.medecinSpecilaite, {'attr': {'class': 'form-control' }}
-                                            ) }}
+                                            {{ form_row(form.medecinSpecilaite, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+
+                                        {# Image Upload Field #}
+                                        <div class="mb-6">
+                                            <label class="form-label" for="form.image">
+                                                <i class="bx bx-image"></i>
+                                                Image de profil
+                                            </label>
+                                            {{ form_row(form.image, {'attr': {'class': 'form-control'}}) }}
                                         </div>
 
                                         <button class="btn btn-primary">
@@ -170,40 +171,40 @@
 
             <!-- Custom Script -->
             <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          let roleSelector = document.querySelector('.js-role-selector');
-          let medecinFields = document.getElementById('medecin-fields');
-          let serviceField = document.getElementById('service-field');
+                document.addEventListener('DOMContentLoaded', function() {
+                    let roleSelector = document.querySelector('.js-role-selector');
+                    let medecinFields = document.getElementById('medecin-fields');
+                    let serviceField = document.getElementById('service-field');
 
-          function toggleFields() {
-              let selectedRole = roleSelector.value;
+                    function toggleFields() {
+                        let selectedRole = roleSelector.value;
 
-              // Show/hide Medecin-specific fields
-              if (selectedRole === 'Medecin') { 
-                  medecinFields.style.display = 'block';
-              } else {
-                  medecinFields.style.display = 'none';
-                  medecinFields.querySelectorAll('input, select').forEach(field => {
-                      field.value = ''; // Reset values when hidden
-                  });
-              }
+                        // Show/hide Medecin-specific fields
+                        if (selectedRole === 'Medecin') { 
+                            medecinFields.style.display = 'block';
+                        } else {
+                            medecinFields.style.display = 'none';
+                            medecinFields.querySelectorAll('input, select').forEach(field => {
+                                field.value = ''; // Reset values when hidden
+                            });
+                        }
 
-              // Show/hide Service field for Medecin, Infirmier, Responsable
-              if (['Medecin', 'Infirmier', 'Responsable'].includes(selectedRole)) {
-                  serviceField.style.display = 'block';
-              } else {
-                  serviceField.style.display = 'none';
-                  serviceField.querySelector('select').value = ''; // Reset when hidden
-              }
-          }
+                        // Show/hide Service field for Medecin, Infirmier, Responsable
+                        if (['Medecin', 'Infirmier', 'Responsable'].includes(selectedRole)) {
+                            serviceField.style.display = 'block';
+                        } else {
+                            serviceField.style.display = 'none';
+                            serviceField.querySelector('select').value = ''; // Reset when hidden
+                        }
+                    }
 
-          // Run on page load (for edit forms)
-          toggleFields();
+                    // Run on page load (for edit forms)
+                    toggleFields();
 
-          // Listen for changes
-          roleSelector.addEventListener('change', toggleFields);
-      });
-    </script>
+                    // Listen for changes
+                    roleSelector.addEventListener('change', toggleFields);
+                });
+            </script>
         {% endblock %}
     </html>
 {% endblock %}

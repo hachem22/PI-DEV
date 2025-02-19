@@ -1,0 +1,72 @@
+{% extends "stock_pharmacie/navbar.html.twig" %}
+
+{% block content %}
+    <div class="content-wrapper" style="margin-top:50px;">
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row">
+                <div class="col-xxl-8 mb-6 order-0">
+                    <div class="card" style="width: 800px; margin-left: 190px; margin-top: 10px;">
+                        <div class="d-flex align-items-start row">
+                            <div class="col-sm-7">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary mb-3">
+                                        Bienvenue Haythem ! 🎉
+                                    </h5>
+                                    <p>
+                                        À partir d'ici, vous pouvez ajouter un nouvel employé et gérer les informations des employés existants.
+                                    </p>
+                                    <a href="/utilisateur/new" class="btn btn-primary">
+                                        Ajouter
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 text-center text-sm-left">
+                                <div class="card-body pb-0 px-0 px-md-6">
+                                    <!-- Image or other content -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- First Row of Cards -->
+        <div class="container-xxl flex-grow-1 container-p-y">
+            <div class="row">
+                <!-- Loop through products and generate cards -->
+                {% for product in stock_pharmacies %}
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="d-flex align-items-start row">
+                                <div class="col-sm-7">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            {{ product.nom }} <!-- Replace with your product's name field -->
+                                        </h5>
+                                        <p class="card-text">
+                                            {{ product.description }} <!-- Replace with your product's description field -->
+                                        </p>
+                                        <a href="{{ path('app_stock_pharmacie_show', {'id': product.id}) }}" class="btn btn-primary">
+                                            Plus
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 text-center text-sm-left">
+                                    <div class="card-body pb-0 px-0 px-md-6" style="margin-left: -100px;">
+                                        <!-- Display product image if available -->
+                                        {% if product.image %}
+                                            <img src="{{ asset('uploads/images/' ~ product.image) }}" alt="{{ product.nom }}" class="img-fluid">
+                                        {% else %}
+                                            <img src="{{ asset('img/default-medicine.png') }}" alt="Image par défaut" class="img-fluid">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,180 +1,115 @@
-<!doctype html>
+{% extends "utilisateur/sidenav.html.twig" %}
 
-<html
-  lang="en"
-  class="light-style layout-menu-fixed layout-compact"
-  dir="ltr"
-  data-theme="theme-default"
-  data-assets-path="{{ asset('../assets/') }}"
-  data-template="vertical-menu-template-free"
-  data-style="light">
-  <head>
+{% block head %}
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
-    <title>Demo : Vertical Layouts - Forms | sneat - Bootstrap Dashboard PRO</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>
+        CareConnect - Détails du Médecin
+    </title>
     <meta name="description" content="" />
-
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('../assets/img/favicon/favicon.ico') }}" />
-
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-      rel="stylesheet" />
-
+    <link rel="preconnect" href="{{ asset('https://fonts.googleapis.com') }}" />
+    <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" crossorigin />
+    <link href="{{ asset('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('../assets/vendor/fonts/boxicons.css') }}" />
-
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('../assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset('../assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('../assets/css/demo.css') }}" />
-
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
-
-    <!-- Page CSS -->
-
     <!-- Helpers -->
     <script src="{{ asset('../assets/vendor/js/helpers.js') }}"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <!-- Template customizer & Theme config files -->
     <script src="{{ asset('../assets/js/config.js') }}"></script>
-  </head>
+{% endblock %}
 
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
+{% block body %}
+    <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 300px; width:800px;margin-left: 200px;">
+        <!-- Back Button -->
+        
 
-        <!-- Content -->
-        <div class="container-xxl flex-grow-1 container-p-y">
-          <!-- Basic Layout -->
-          <div class="row">
-            <div class="col-xl">
-              <div class="card mb-6">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h5 class="mb-0">Basic with Icons</h5>
-                  <small class="text-muted float-end">Merged input group</small>
+        <!-- Doctor Details Card -->
+        <div class="card">
+            <h5 class="card-header">Détails du {{ utilisateur.utilisateurRole.value }}</h5>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Doctor Image (Placeholder) -->
+                    <div class="col-md-4 text-center">
+                        <img src="{{ asset('../assets/img/avatars/doctor-avatar.png') }}" alt="Doctor Avatar" class="rounded-circle mb-3" width="150" height="150" />
+                        <h4 class="mb-2">{{ utilisateur.Nom }} {{ utilisateur.Prenom }}</h4>
+                        <span class="badge bg-label-primary">{{ utilisateur.medecinSpecilaite.value }}</span>
+                    </div>
+
+                    <!-- Doctor Details -->
+                    <div class="col-md-8">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nom</label>
+                                <p class="form-control-static">{{ utilisateur.Nom }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Prénom</label>
+                                <p class="form-control-static">{{ utilisateur.Prenom }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <p class="form-control-static">{{ utilisateur.Email }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Téléphone</label>
+                                <p class="form-control-static">{{ utilisateur.Tel }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Adresse</label>
+                                <p class="form-control-static">{{ utilisateur.Adress }}</p>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label class="form-label">Spécialité</label>
+                                <p class="form-control-static">
+                                    <span class="badge bg-label-primary">{{ utilisateur.medecinSpecilaite.value }}</span>
+                                </p>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
-                <div class="card-body">
-                  <form>
-                    <div class="mb-6">
-                      <label class="form-label" for="basic-icon-default-fullname">Full Name</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basic-icon-default-fullname2" class="input-group-text"
-                          ><i class="bx bx-user"></i
-                        ></span>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="basic-icon-default-fullname"
-                          placeholder="John Doe"
-                          aria-label="John Doe"
-                          aria-describedby="basic-icon-default-fullname2" />
-                      </div>
-                    </div>
-                    <div class="mb-6">
-                      <label class="form-label" for="basic-icon-default-company">Company</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basic-icon-default-company2" class="input-group-text"
-                          ><i class="bx bx-buildings"></i
-                        ></span>
-                        <input
-                          type="text"
-                          id="basic-icon-default-company"
-                          class="form-control"
-                          placeholder="ACME Inc."
-                          aria-label="ACME Inc."
-                          aria-describedby="basic-icon-default-company2" />
-                      </div>
-                    </div>
-                    <div class="mb-6">
-                      <label class="form-label" for="basic-icon-default-email">Email</label>
-                      <div class="input-group input-group-merge">
-                        <span class="input-group-text"><i class="bx bx-envelope"></i></span>
-                        <input
-                          type="text"
-                          id="basic-icon-default-email"
-                          class="form-control"
-                          placeholder="john.doe"
-                          aria-label="john.doe"
-                          aria-describedby="basic-icon-default-email2" />
-                        <span id="basic-icon-default-email2" class="input-group-text">@example.com</span>
-                      </div>
-                      <div class="form-text">You can use letters, numbers & periods</div>
-                    </div>
-                    <div class="mb-6">
-                      <label class="form-label" for="basic-icon-default-phone">Phone No</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basic-icon-default-phone2" class="input-group-text"
-                          ><i class="bx bx-phone"></i
-                        ></span>
-                        <input
-                          type="text"
-                          id="basic-icon-default-phone"
-                          class="form-control phone-mask"
-                          placeholder="658 799 8941"
-                          aria-label="658 799 8941"
-                          aria-describedby="basic-icon-default-phone2" />
-                      </div>
-                    </div>
-                    <div class="mb-6">
-                      <label class="form-label" for="basic-icon-default-message">Message</label>
-                      <div class="input-group input-group-merge">
-                        <span id="basic-icon-default-message2" class="input-group-text"
-                          ><i class="bx bx-comment"></i
-                        ></span>
-                        <textarea
-                          id="basic-icon-default-message"
-                          class="form-control"
-                          placeholder="Hi, Do you have a moment to talk Joe?"
-                          aria-label="Hi, Do you have a moment to talk Joe?"
-                          aria-describedby="basic-icon-default-message2"></textarea>
-                      </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Send</button>
-                  </form>
-                </div>
-              </div>
             </div>
-          </div>
+
+            <!-- Card Footer with Actions -->
+            <div class="card-footer text-end">
+                <a href="{{ path('app_utilisateur_edit', {'id': utilisateur.id}) }}" class="btn btn-primary">
+                    <i class="bx bx-edit-alt me-1"></i> Modifier
+                </a>
+            </div>
+            <div class="mb-3" style="margin-left: 550px;">
+            <a href="{{ path('app_utilisateur_index') }}" class="btn btn-secondary">
+                <i class="bx bx-arrow-back me-1"></i> Retour à la liste
+            </a>
         </div>
-        <!-- / Content -->
-
-        <div class="content-backdrop fade"></div>
-      </div>
-      <!-- Content wrapper -->
+        </div>
     </div>
-    <!-- / Layout page -->
+{% endblock %}
 
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-    <!-- / Layout wrapper -->
-
+{% block scripts %}
     <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('../assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('../assets/vendor/libs/popper/popper.js') }}"></script>
     <script src="{{ asset('../assets/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('../assets/vendor/js/menu.js') }}"></script>
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-
     <!-- Main JS -->
     <script src="{{ asset('../assets/js/main.js') }}"></script>
-
-    <!-- Page JS -->
-
-    <!-- Place this tag before closing body tag for github widget button. -->
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-  </body>
-</html>
+{% endblock %}

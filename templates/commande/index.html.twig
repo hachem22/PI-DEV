@@ -1,0 +1,118 @@
+{% extends "commande/stock_pharmacie/navbar.html.twig" %}
+
+{% block head %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>
+       CareConnect
+    </title>
+    <meta name="description" content="" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('../assets/img/favicon/favicon.ico') }}" />
+    <!-- Fonts -->
+    <link rel="preconnect" href="{{ asset('https://fonts.googleapis.com') }}" />
+    <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" crossorigin />
+    <link href="{{ asset('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/fonts/boxicons.css') }}" />
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('../assets/css/demo.css') }}" />
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <!-- Helpers -->
+    <script src="{{ asset('../assets/vendor/js/helpers.js') }}"></script>
+    <!-- Template customizer & Theme config files -->
+    <script src="{{ asset('../assets/js/config.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="pharmacy-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h1>Liste des commandes</h1>
+                        <p class="lead">Gérez toutes vos commandes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="pharmacy-content">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Médicament</th>
+                                        <th>Quantité</th>
+                                        <th>Date de commande</th>
+                                        <th>Date de livraison</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for commande in commandes %}
+                                    <tr>
+                                        <td>{{ commande.id }}</td>
+                                        <td>{{ commande.stockPharmacie.nom }}</td>
+                                        <td>{{ commande.quantite }}</td>
+                                        <td>{{ commande.dateCommande|date('d/m/Y H:i') }}</td>
+                                        <td>{{ commande.dateLivraison|date('d/m/Y') }}</td>
+                                        <td>
+                                            <span class="badge bg-{{ commande.statut == 'Livrée' ? 'success' : 
+                                                commande.statut == 'Annulée' ? 'danger' : 'warning' }}">
+                                                {{ commande.statut }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="{{ path('app_commande_show', {'id': commande.id}) }}" class="btn btn-info btn-sm">
+                                                    <i class="fa fa-eye me-1"></i>Voir
+                                                </a>
+                                                {% if not commande.isLivree %}
+                                                    <a href="{{ path('app_commande_edit', {'id': commande.id}) }}" class="btn btn-primary btn-sm">
+                                                        <i class="fa fa-edit me-1"></i>Modifier
+                                                    </a>
+                                                    <form method="post" action="{{ path('app_commande_delete', {'id': commande.id}) }}" 
+                                                          style="display: inline-block"
+                                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?');">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commande.id) }}">
+                                                        <button class="btn btn-danger btn-sm">
+                                                            <i class="fa fa-trash me-1"></i>Supprimer
+                                                        </button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">Aucune commande trouvée</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <!-- Core JS -->
+    <script src="{{ asset('../assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('../assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('../assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+    <script src="{{ asset('../assets/vendor/js/menu.js') }}"></script>
+    <!-- Main JS -->
+    <script src="{{ asset('../assets/js/main.js') }}"></script>
+{% endblock %}
