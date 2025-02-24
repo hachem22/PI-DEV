@@ -3,3 +3,11 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+message_new:
+    path: /message/new
+    controller: App\Controller\MessageController::newMessage
+login:
+    path: /login
+    controller: App\Controller\SecurityController::login
+
+
