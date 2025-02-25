@@ -1,0 +1,43 @@
+{% extends 'medecin/baseMedecin.html.twig' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <form id="medecinForm" class="mb-4">
+            <label for="medecinSelect" class="form-label">Sélectionnez un médecin :</label>
+            <select id="medecinSelect" name="medecin" class="form-select" onchange="document.getElementById('medecinForm').submit();">
+                <option value="">Tous les médecins</option>
+                {% for medecin in medecins %}
+                    <option value="{{ medecin.id }}" {% if medecin.id == selectedMedecinId %}selected{% endif %}>{{ medecin.nom }}</option>
+                {% endfor %}
+            </select>
+        </form>
+
+        <div id="calendar"></div>
+    </div>
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: {{ events|raw }},
+                eventDidMount: function(info) {
+                    if (info.event.extendedProps.display === 'background') {
+                        info.el.classList.add('fc-daygrid-day-red');
+                    } else if (info.event.extendedProps.color === 'green') {
+                        info.el.classList.add('fc-daygrid-event-green');
+                    }
+                }
+            });
+
+            calendar.setOption('height', 'auto');
+            calendar.setOption('contentHeight', 500);
+            calendar.setOption('aspectRatio', 1.5);
+
+            calendar.render();
+        });
+    </script>
+{% endblock %}

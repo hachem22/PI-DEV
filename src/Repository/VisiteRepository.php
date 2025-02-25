@@ -15,29 +15,15 @@ class VisiteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Visite::class);
     }
+    public function findByDossierMedical(int $dossierMedicalId): array
+    {
+        return $this->createQueryBuilder('v')
+            ->leftJoin('v.dossierMedical', 'd') // Assurez-vous de faire une jointure correcte avec DossierMedical
+            ->andWhere('d.id = :dossierMedicalId')
+            ->setParameter('dossierMedicalId', $dossierMedicalId)
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    /**
-    //     * @return Visite[] Returns an array of Visite objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Visite
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    
 }

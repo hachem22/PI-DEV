@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\VisiteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VisiteRepository::class)]
 class Visite
@@ -15,22 +16,37 @@ class Visite
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date_visite = null;
+    #[Assert\NotBlank(message: "La date de visite est obligatoire.")]
+    #[Assert\GreaterThan(
+        "tomorrow",
+        message: "La date de visite doit être supérieure à la date actuelle plus un jour."
+    )]
+    private ?\DateTimeInterface $dateVisite = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le diagnostic est obligatoire.")]
+    #[Assert\Length(min: 10, max: 255, minMessage: "Le diagnostic doit contenir au moins {{ limit }} caractères.")]
     private ?string $diagnostic = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $ordonnace = null;
+    #[Assert\NotBlank(message: "L'ordonnance est obligatoire.")]
+    #[Assert\Length(min: 10, max: 255, minMessage: "L'ordonnance doit contenir au moins {{ limit }} caractères.")]
+    private ?string $ordonnance = null; // Corrected typo: 'ordonnace' -> 'ordonnance'
 
     #[ORM\Column(length: 255)]
-    private ?string $ceteficat = null;
+    #[Assert\NotBlank(message: "Le certificat est obligatoire.")]
+    #[Assert\Length(min: 10, max: 255, minMessage: "Le certificat doit contenir au moins {{ limit }} caractères.")]
+    private ?string $certificat = null; // Corrected typo: 'ceteficat' -> 'certificat'
 
     #[ORM\OneToOne(inversedBy: 'visite', cascade: ['persist', 'remove'])]
-    private ?RendezVous $Rdv = null;
+    private ?RendezVous $rdv = null;
 
-    #[ORM\ManyToOne(inversedBy: 'vistes')]
-    private ?DossierMedical $dossierMedical = null;
+    #[ORM\ManyToOne(inversedBy: 'visites')]
+    #[Assert\NotNull(message: "Le dossier médical est obligatoire.")]
+
+    private ?DossierMedical $dossierMedical = null; // Corrected property name to lowercase
+
+    
 
     public function getId(): ?int
     {
@@ -39,13 +55,12 @@ class Visite
 
     public function getDateVisite(): ?\DateTimeInterface
     {
-        return $this->date_visite;
+        return $this->dateVisite;
     }
 
-    public function setDateVisite(\DateTimeInterface $date_visite): static
+    public function setDateVisite(\DateTimeInterface $dateVisite): static
     {
-        $this->date_visite = $date_visite;
-
+        $this->dateVisite = $dateVisite;
         return $this;
     }
 
@@ -57,43 +72,39 @@ class Visite
     public function setDiagnostic(string $diagnostic): static
     {
         $this->diagnostic = $diagnostic;
-
         return $this;
     }
 
-    public function getOrdonnace(): ?string
+    public function getOrdonnance(): ?string
     {
-        return $this->ordonnace;
+        return $this->ordonnance;
     }
 
-    public function setOrdonnace(string $ordonnace): static
+    public function setOrdonnance(string $ordonnance): static
     {
-        $this->ordonnace = $ordonnace;
-
+        $this->ordonnance = $ordonnance;
         return $this;
     }
 
-    public function getCeteficat(): ?string
+    public function getCertificat(): ?string
     {
-        return $this->ceteficat;
+        return $this->certificat;
     }
 
-    public function setCeteficat(string $ceteficat): static
+    public function setCertificat(string $certificat): static
     {
-        $this->ceteficat = $ceteficat;
-
+        $this->certificat = $certificat;
         return $this;
     }
 
     public function getRdv(): ?RendezVous
     {
-        return $this->Rdv;
+        return $this->rdv;
     }
 
-    public function setRdv(?RendezVous $Rdv): static
+    public function setRdv(?RendezVous $rdv): static
     {
-        $this->Rdv = $Rdv;
-
+        $this->rdv = $rdv;
         return $this;
     }
 
@@ -108,4 +119,6 @@ class Visite
 
         return $this;
     }
+
+   
 }

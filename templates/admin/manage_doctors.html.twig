@@ -1,0 +1,14 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+
+{% block body %}
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Admin Dashboard</a>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% block content %}doctors{% endblock %}
+</div>
+{% endblock %}

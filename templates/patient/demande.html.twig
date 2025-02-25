@@ -1,0 +1,125 @@
+{% extends 'patient/baseRendezVous.html.twig' %}
+
+
+{% block title %}Demande Rendez Vous{% endblock %}
+
+{% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card" style="padding: 20px;">
+            <div class="container mt-5" style="width: 1000px">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6">
+                        <div class="card shadow-lg border-0" style="width: 600px; height: 450px; margin-left: -100px; margin-top: 20px; margin-bottom: 20px;">
+                            <div class="card-header bg-primary text-white text-center">
+                                <h3 class="card-title mb-0">Prendre Rendez Vous</h3>
+                            </div>
+                            <div class="card-body p-5" >
+                                {% if form is not null %}
+                                    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+                                    {# Champ Service #}
+                                    <div class="mb-4">
+                                        {{ form_label(form.service, 'Service', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.service, {'attr': {'class': 'form-select select-service'}}) }}
+                                        {% if form.service.vars.errors|length > 0 %}
+                                            <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                                                {{ form_errors(form.service) }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                    {# Champ Médecin #}
+                                    <div class="mb-4">
+                                        {{ form_label(form.medecin, 'Médecin', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.medecin, {'attr': {'class': 'form-select select-medecin'}}) }}
+                                        {% if form.medecin.vars.errors|length > 0 %}
+                                            <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                                                {{ form_errors(form.medecin) }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                    {# Champ Date #}
+                                    <div class="mb-4">
+                                        {{ form_label(form.date, 'Date', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.date, {'attr': {'class': 'form-control select-date', 'type': 'date'}}) }}
+                                        {% if form.date.vars.errors|length > 0 %}
+                                            <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                                                {{ form_errors(form.date) }}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                    {# Bouton de soumission #}
+                                    <div class="d-grid gap-2">
+                                        <button type="submit" class="btn btn-primary btn-lg">Next</button>
+                                    </div>
+
+                                    {{ form_end(form) }}
+                                {% else %}
+                                    <p class="text-center text-danger">Aucun service disponible pour le moment.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const serviceSelect = document.querySelector('.select-service');
+            const medecinSelect = document.querySelector('.select-medecin');
+            const dateSelect = document.querySelector('.select-date');
+
+            serviceSelect.addEventListener('change', function () {
+                const serviceId = this.value;
+                if (serviceId) {
+                    fetch(`/medecins/par-service/${serviceId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            medecinSelect.innerHTML = '<option value="">Sélectionnez un médecin</option>';
+                            data.forEach(medecin => {
+                                const option = document.createElement('option');
+                                option.value = medecin.id;
+                                option.textContent = medecin.nom;
+                                medecinSelect.appendChild(option);
+                            });
+                            medecinSelect.disabled = false;
+                        })
+                        .catch(error => console.error('Erreur lors du chargement des médecins:', error));
+                } else {
+                    medecinSelect.innerHTML = '<option value="">Sélectionnez un service d\'abord</option>';
+                    medecinSelect.disabled = true;
+                }
+            });
+
+            medecinSelect.addEventListener('change', function () {
+                const medecinId = this.value;
+                dateSelect.disabled = false;
+            });
+
+            document.querySelector('form').addEventListener('submit', function (event) {
+                event.preventDefault();
+                const dateSelectionnee = dateSelect.value;
+                const medecinId = medecinSelect.value;
+
+                if (dateSelectionnee && medecinId) {
+                    fetch(`/verifier-disponibilite-date?medecinId=${medecinId}&date=${dateSelectionnee}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.disponible) {
+                                this.submit();
+                            } else {
+                                alert('Cette date n\'est pas disponible.');
+                            }
+                        })
+                        .catch(error => console.error('Erreur lors de la vérification de la disponibilité:', error));
+                } else {
+                    alert('Veuillez sélectionner un service, un médecin et une date.');
+                }
+            });
+        });
+    </script>
+{% endblock %}

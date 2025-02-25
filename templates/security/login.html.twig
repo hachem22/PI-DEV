@@ -3,19 +3,8 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-        <title>
-            Se connecter
-        </title>
+        <title>Se connecter</title>
         <meta name="description" content="" />
-        <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="{{ asset('../assets/img/favicon/favicon.ico') }}" />
-        <!-- Fonts -->
-        <link rel="preconnect" href="{{ asset('https://fonts.googleapis.com') }}" />
-        <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" crossorigin />
-        <link href="{{ asset('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap') }}" rel="stylesheet" />
-        <link rel="stylesheet" href="{{ asset('../assets/vendor/fonts/boxicons.css') }}" />
-        <!-- Core CSS -->
-        <link rel="stylesheet" href="{{ asset('../assets/vendor/css/core.css" class="template-customizer-core-css') }}" />
         <!-- Favicon -->
         <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon/favicon.ico') }}" />
         <!-- Fonts -->
@@ -33,17 +22,16 @@
         <!-- Page CSS -->
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}" />
         <!-- Helpers -->
-        <script src="{{ asset('../assets/vendor/js/helpers.js') }}"></script>
-        <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-        <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('../assets/js/config.js') }}"></script>
+        <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+        <!-- Config -->
+        <script src="{{ asset('assets/js/config.js') }}"></script>
     </head>
     <body>
         <!-- Content -->
         <div class="container-xxl">
             <div class="authentication-wrapper authentication-basic container-p-y">
                 <div class="authentication-inner">
-                    <!-- Register -->
+                    <!-- Login Form -->
                     <div class="card px-sm-6 px-0">
                         <div class="card-body">
                             <!-- Logo -->
@@ -54,90 +42,74 @@
                                             <!-- SVG Paths Here -->
                                         </svg>
                                     </span>
-                                    <span class="app-brand-text demo text-heading fw-bold">
-                                        CareConnect
-                                    </span>
+                                    <span class="app-brand-text demo text-heading fw-bold">CareConnect</span>
                                 </a>
                             </div>
                             <!-- /Logo -->
-                            <h4 class="mb-1">
-                                Bienvenue sur CareConnect ! 👋
-                            </h4>
-                            <p class="mb-6">
-                                Veuillez vous connecter à votre compte pour commencer l'aventure
-                            </p>
-                            <!-- Updated Form -->
-                            <form id="formAuthentication" class="mb-6" method="post" action="{{ path('app_login') }}">
+                            <h4 class="mb-1">Bienvenue sur CareConnect ! 👋</h4>
+                            <p class="mb-6">Veuillez vous connecter à votre compte pour commencer l'aventure</p>
 
+                            <!-- Flash Messages -->
+                            {% if error %}
+                                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                            {% endif %}
+
+                            <!-- Login Form -->
+                            <form id="formAuthentication" class="mb-6" method="post" action="{{ path('app_login') }}">                                <!-- CSRF Token -->
+                                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                                <!-- Email Field -->
                                 <div class="mb-6">
-                                    <label for="email" class="form-label">
-                                        Email
-                                    </label>
-                                    <input type="text" class="form-control" id="email" name="_username" placeholder="Entrez votre email ou nom d'utilisateur" autofocus value="{{ last_username }}" required />
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="email" name="_username" placeholder="Entrez votre email" autofocus value="{{ last_username }}" required />
                                 </div>
+
+                                <!-- Password Field -->
                                 <div class="mb-6 form-password-toggle">
-                                    <label class="form-label" for="password">
-                                        Mot de passe
-                                    </label>
+                                    <label class="form-label" for="password">Mot de passe</label>
                                     <div class="input-group input-group-merge">
                                         <input type="password" id="password" class="form-control" name="_password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" required />
-                                        <span class="input-group-text cursor-pointer">
-                                            <i class="bx bx-hide"></i>
-                                        </span>
+                                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                     </div>
                                 </div>
+
+                                <!-- Remember Me Checkbox -->
                                 <div class="mb-8">
                                     <div class="d-flex justify-content-between mt-8">
                                         <div class="form-check mb-0 ms-2">
-                                            <input class="form-check-input" type="checkbox" id="remember-me" />
-                                            <label class="form-check-label" for="remember-me">
-                                                Se souvenir de moi
-                                            </label>
+                                            <input class="form-check-input" type="checkbox" id="remember-me" name="_remember_me" />
+                                            <label class="form-check-label" for="remember-me">Se souvenir de moi</label>
                                         </div>
-                                        <a href="auth-forgot-password-basic.html">
-                                            <span>
-                                                Mot de passe oublié ?
-                                            </span>
-                                        </a>
+                                        <a href="/forgot-password"><span>Mot de passe oublié ?</span></a>
                                     </div>
                                 </div>
+
+                                <!-- Submit Button -->
                                 <div class="mb-6">
-                                    <button class="btn btn-primary d-grid w-100" type="submit">
-                                        Se connecter
-                                    </button>
+                                    <button class="btn btn-primary d-grid w-100" type="submit">Se connecter</button>
                                 </div>
                             </form>
+
+                            <!-- Registration Link -->
                             <p class="text-center">
-                                <span>
-                                    Nouveau sur notre plateforme ?
-                                </span>
-                                <a href="/patient/new">
-                                    <span>
-                                        Créer un compte
-                                    </span>
-                                </a>
+                                <span>Nouveau sur notre plateforme ?</span>
+                                <a href="#"><span>Créer un compte</span></a>
                             </p>
                         </div>
                     </div>
-                    <!-- /Register -->
+                    <!-- /Login Form -->
                 </div>
             </div>
         </div>
         <!-- / Content -->
 
         <!-- Core JS -->
-        <!-- build:js assets/vendor/js/core.js -->
-        <script src="{{ asset('../assets/vendor/libs/jquery/jquery.js') }}"></script>
-        <script src="{{ asset('../assets/vendor/libs/popper/popper.js') }}"></script>
-        <script src="{{ asset('../assets/vendor/js/bootstrap.js') }}"></script>
-        <script src="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
-        <script src="{{ asset('../assets/vendor/js/menu.js') }}"></script>
-        <!-- endbuild -->
-        <!-- Vendors JS -->
+        <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+        <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+        <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+        <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+        <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
         <!-- Main JS -->
-        <script src="{{ asset('../assets/js/main.js') }}"></script>
-        <!-- Page JS -->
-        <!-- Place this tag before closing body tag for github widget button. -->
-        <script async defer src="{{ asset('https://buttons.github.io/buttons.js') }}"></script>
+        <script src="{{ asset('assets/js/main.js') }}"></script>
     </body>
 </html>

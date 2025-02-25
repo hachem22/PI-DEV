@@ -25,6 +25,10 @@ class UtilisateurRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findOneByEmail(string $email): ?Utilisateur
+    {
+        return $this->findOneBy(['Email' => $email]);
+    }
     
     //    /**
     //     * @return Utilisateur[] Returns an array of Utilisateur objects

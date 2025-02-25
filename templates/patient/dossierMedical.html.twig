@@ -1,0 +1,88 @@
+{% extends 'patient/baseRendezVous.html.twig' %}
+
+{% block title %}Liste des Dossiers Médicaux{% endblock %}
+
+{% block content %}
+ 
+    <div class="container mt-5">
+        <div class="card shadow-lg p-4">
+            <h1 class="mb-4 text-center text-primary">Liste des Dossiers Médicaux</h1>
+
+            {# Tableau des dossiers médicaux #}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Groupe Sanguin</th>
+                            <th>Allergies</th>
+                            <th>Vaccinations</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for dossier in dossier_medicals %}
+                            <tr class="align-middle">
+                                <td>{{ dossier.id }}</td>
+                                <td>{{ dossier.GroupeSanguin }}</td>
+                                <td>{{ dossier.Allergies }}</td>
+                                <td>{{ dossier.Vaccinations }}</td>
+                                <td>
+                                    <a href="{{ path('telecharger_pdf_dossier_medical', {'id': dossier.id}) }}" class="btn btn-info btn-sm">
+                                        <i class="bx bx-download"></i> Télécharger PDF
+                                    </a>
+                                    <a href="{{ path('visite_index', {'id': dossier.id}) }}" class="btn btn-success btn-sm">
+                                        <i class="bx bx-history"></i> Historique Visites
+                                    </a>
+                                    <a href="{{ path('consulter', {'id': dossier.id}) }}" class="btn btn-primary btn-sm">
+                                        <i class="bx bx-show-alt"></i> 
+                                    </a>
+                                    <a href="{{ path('editDossier', {'id': dossier.id}) }}" class="btn btn-warning btn-sm">
+                                        <i class="bx bx-edit"></i> 
+                                    </a>
+                                 
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="fas fa-calendar-times fa-2x"></i><br>
+                                    Aucun dossier médical trouvé.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {# Bouton Ajouter #}
+            
+        </div>
+    </div>
+
+    {# Ajout des styles personnalisés pour améliorer la présentation #}
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .card {
+            border-radius: 10px;
+        }
+
+        .btn-sm {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-success, .btn-info, .btn-primary, .btn-warning, .btn-danger {
+            border-radius: 5px;
+        }
+    </style>
+
+    {# Ajout de FontAwesome et Boxicons pour les icônes #}
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/boxicons@2.1.0/dist/boxicons.min.js"></script>
+{% endblock %}

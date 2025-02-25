@@ -1,0 +1,28 @@
+{% extends 'medecin/baseMedecin.html.twig' %}
+
+{% block title %}Plannings{% endblock %}
+
+{% block body %}
+    <h1>Plannings des médecins</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Heures réservées</th>
+                <th>Médecin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for planning in plannings %}
+                <tr>
+                    <td>{{ planning.dateDisponible|date('Y-m-d') }}</td>
+                    <td>{{ planning.tempsReserver|join(', ') }}</td>
+                    <td>{{ planning.medecin.nom }} {{ planning.medecin.prenom }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('planning_create') }}">Créer un planning</a>
+{% endblock %}

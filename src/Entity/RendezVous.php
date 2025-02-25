@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Enum\Rdvstatus;
 use App\Repository\RendezVousRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -15,14 +16,41 @@ class RendezVous
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\GreaterThan(
+        "tomorrow",
+        message: "La date de rendez-vous doit être supérieure à la date actuelle plus un jour."
+    )]
     private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $heure = null;
+    #[ORM\ManyToOne(targetEntity: Planning::class, inversedBy: 'rendezVous')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Planning $planning = null;
 
-    #[ORM\OneToOne(mappedBy: 'Rdv', cascade: ['persist', 'remove'])]
-    private ?Visite $visite = null;
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'rendezVous')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Utilisateur $medecin = null;
+
+    #[ORM\Column(type: 'string', length: 50, nullable: true)]
+    private ?string $rendezVousStatus = null;
+
+    #[ORM\ManyToOne(targetEntity: Service::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Service $service = null;
+
+    #[ORM\Column(type: 'string', length: 5, nullable: true)]
+    private ?string $heure = null;
+
+    public function getHeure(): ?string
+    {
+        return $this->heure;
+    }
+
+    public function setHeure(?string $heure): self
+    {
+        $this->heure = $heure;
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -37,43 +65,55 @@ class RendezVous
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
-
         return $this;
     }
 
-
-
-    public function getHeure(): ?\DateTimeInterface
+    public function getPlanning(): ?Planning
     {
-        return $this->heure;
+        return $this->planning;
     }
 
-    public function setHeure(\DateTimeInterface $heure): static
+    public function setPlanning(?Planning $planning): self
     {
-        $this->heure = $heure;
-
+        $this->planning = $planning;
         return $this;
     }
 
-    public function getVisite(): ?Visite
+    public function getMedecin(): ?Utilisateur
     {
-        return $this->visite;
+        return $this->medecin;
     }
 
-    public function setVisite(?Visite $visite): static
+    public function setMedecin(?Utilisateur $medecin): static
     {
-        // unset the owning side of the relation if necessary
-        if ($visite === null && $this->visite !== null) {
-            $this->visite->setRdv(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($visite !== null && $visite->getRdv() !== $this) {
-            $visite->setRdv($this);
-        }
-
-        $this->visite = $visite;
-
+        $this->medecin = $medecin;
         return $this;
+    }
+
+    public function getRendezVousStatus(): ?string
+    {
+        return $this->rendezVousStatus;
+    }
+
+    public function setRendezVousStatus(?string $rendezVousStatus): static
+    {
+        $this->rendezVousStatus = $rendezVousStatus;
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): static
+    {
+        $this->service = $service;
+        return $this;
+    }
+
+    public function getDateDisponible(): ?\DateTimeInterface
+    {
+        return $this->planning ? $this->planning->getDateDisponible() : null;
     }
 }

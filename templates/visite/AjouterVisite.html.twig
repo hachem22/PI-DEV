@@ -1,0 +1,174 @@
+{% extends 'medecin/baseMedecin.html.twig' %}
+
+{% block title %}Ajouter Visite{% endblock %}
+
+{% block content %}
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <div class="card shadow-lg p-4">
+            <h5 class="card-header">
+                Ajouter Visite
+            </h5>
+
+            <div class="card-body">
+                {% for message in app.flashes('success') %}
+                    <div class="toast bg-success text-white" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                        <div class="toast-header bg-success text-white">
+                            <strong class="mr-auto">Succès</strong>
+                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                    <div class="toast bg-danger text-white" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                        <div class="toast-header bg-danger text-white">
+                            <strong class="mr-auto">Erreur</strong>
+                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body">
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                {{ form_start(form, {
+                    'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'},
+                    'action': path('ajouter_visite', {'id': dossierMedical.id}),
+                    'method': 'POST'
+                }) }}
+
+                <!-- Maladies Dropdown -->
+                <div class="mb-3">
+                    <label for="maladies" class="form-label">Maladies</label>
+                    <select id="maladies" class="form-control">
+                        <option value="">Sélectionnez une maladie</option>
+                        <option value="mal de tête">Mal de tête</option>
+                        <option value="fièvre">Fièvre</option>
+                        <option value="douleur thoracique">Douleur thoracique</option>
+                        <option value="vertiges">Vertiges</option>
+                        <option value="toux">Toux</option>
+                        <option value="nausée">Nausée</option>
+                    </select>
+                </div>
+
+                <!-- Generate Buttons -->
+                <div class="mb-3">
+                    <button type="button" class="btn btn-primary" onclick="generate('diagnostic')">Générer Diagnostic</button>
+                    <button type="button" class="btn btn-primary" onclick="generate('ordonnance')">Générer Ordonnance</button>
+                </div>
+
+                <!-- Accept/Refuse Buttons for Diagnostic -->
+                <div class="mb-3" id="diagnostic-ai-buttons" style="display: none;">
+                    <button type="button" class="btn btn-success" onclick="accept('diagnostic')">Accepter Diagnostic</button>
+                    <button type="button" class="btn btn-danger" onclick="disableAuto('diagnostic')">Refuser Diagnostic</button>
+                </div>
+
+                <!-- Diagnostic Field -->
+                <div class="mb-3">
+                    {{ form_label(form.diagnostic, 'Diagnostic', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.diagnostic, {'attr': {'class': 'form-control', 'id': 'diagnostic-field'}}) }}
+                    {% if form.diagnostic.vars.errors|length > 0 %}
+                        <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                            {{ form_errors(form.diagnostic) }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Accept/Refuse Buttons for Ordonnance -->
+                <div class="mb-3" id="ordonnance-ai-buttons" style="display: none;">
+                    <button type="button" class="btn btn-success" onclick="accept('ordonnance')">Accepter Ordonnance</button>
+                    <button type="button" class="btn btn-danger" onclick="disableAuto('ordonnance')">Refuser Ordonnance</button>
+                </div>
+
+                <!-- Ordonnance Field -->
+                <div class="mb-3">
+                    {{ form_label(form.ordonnance, 'Ordonnance', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.ordonnance, {'attr': {'class': 'form-control', 'id': 'ordonnance-field'}}) }}
+                    {% if form.ordonnance.vars.errors|length > 0 %}
+                        <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                            {{ form_errors(form.ordonnance) }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Certificat Field -->
+                <div class="mb-3">
+                    {{ form_label(form.certificat, 'Certificat', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.certificat, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.certificat.vars.errors|length > 0 %}
+                        <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                            {{ form_errors(form.certificat) }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Date de la Visite -->
+                <div class="mb-3">
+                    {{ form_label(form.dateVisite, 'Date de la Visite', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.dateVisite, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.dateVisite.vars.errors|length > 0 %}
+                        <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                            {{ form_errors(form.dateVisite) }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="bx bx-save"></i> Enregistrer
+                </button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function generate(type) {
+            const maladie = document.getElementById('maladies').value;
+            if (!maladie) {
+                alert('Veuillez sélectionner une maladie.');
+                return;
+            }
+
+            const response = await fetch(`/api/generate-${type}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ maladie })
+            });
+
+            const data = await response.json();
+            const field = document.getElementById(`${type}-field`);
+            const aiButtons = document.getElementById(`${type}-ai-buttons`);
+
+            if (data[type]) {
+                field.value = data[type];
+                field.disabled = true;
+                aiButtons.style.display = 'block';
+            } else {
+                alert(`Erreur lors de la génération du ${type}.`);
+            }
+        }
+
+        function accept(type) {
+            const field = document.getElementById(`${type}-field`);
+            field.disabled = true;
+            const aiButtons = document.getElementById(`${type}-ai-buttons`);
+            aiButtons.style.display = 'none';
+        }
+
+        function disableAuto(type) {
+            const field = document.getElementById(`${type}-field`);
+            field.value = '';
+            field.disabled = false;
+            const aiButtons = document.getElementById(`${type}-ai-buttons`);
+            aiButtons.style.display = 'none';
+        }
+    </script>
+{% endblock %}

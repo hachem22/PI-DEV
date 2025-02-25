@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/animated.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
     {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
 <body>
@@ -612,6 +613,7 @@
     <script src="{{ asset('assets/js/popup.js') }}"></script>
     <script src="{{ asset('assets/js/custom.js') }}"></script>
     {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
     {% endblock %}
 </body>
 </html>

@@ -6,6 +6,7 @@ use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Enum\NomService;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 class Service
@@ -15,8 +16,8 @@ class Service
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Nom = null;
+    #[ORM\Column(type: 'string',enumType: NomService::class)]
+    private ?NomService $Nom = null;
 
     /**
      * @var Collection<int, Utilisateur>
@@ -34,17 +35,18 @@ class Service
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNom(): ?NomService
     {
         return $this->Nom;
     }
 
-    public function setNom(string $Nom): static
+    public function setNom(NomService $Nom): static
     {
         $this->Nom = $Nom;
 
         return $this;
     }
+    
 
     /**
      * @return Collection<int, Utilisateur>

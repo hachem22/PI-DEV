@@ -1,0 +1,90 @@
+{% extends 'patient/baseRendezVous.html.twig' %}
+
+{% block head %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>CareConnect</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('../assets/img/favicon/favicon.ico') }}" />
+    <link rel="preconnect" href="{{ asset('https://fonts.googleapis.com') }}" />
+    <link rel="preconnect" href="{{ asset('https://fonts.gstatic.com') }}" crossorigin />
+    <link href="{{ asset('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/fonts/boxicons.css') }}" />
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/css/core.css') }}" />
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/css/theme-default.css') }}" />
+    <link rel="stylesheet" href="{{ asset('../assets/css/demo.css') }}" />
+    <link rel="stylesheet" href="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+    <script src="{{ asset('../assets/vendor/js/helpers.js') }}"></script>
+    <script src="{{ asset('../assets/js/config.js') }}"></script>
+{% endblock %}
+ {% block content %}
+ <div class="container-xxl flex-grow-1 container-p-y"style="margin-top: 20px;">
+ <div class="card" style="padding: 20px;">
+     <h5 class="card-header">
+                Liste des rendez-vous envoyés
+            </h5>
+
+            {# Tableau des rendez-vous #}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col"><i class="far fa-calendar-alt"></i> Date</th>
+                            <th scope="col"><i class="far fa-clock"></i> Heure</th>
+                            <th scope="col"><i class="fas fa-user-md"></i> Médecin</th>
+                            <th scope="col"><i class="fas fa-hospital"></i> Service</th>
+                            <th scope="col"><i class="fas fa-info-circle"></i> Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rendezVous in rendezVousList %}
+                            <tr class="align-middle">
+                                <td>{{ rendezVous.id }}</td>
+                                <td>{{ rendezVous.date ? rendezVous.date|date('d/m/Y') : '' }}</td>
+                                <td>{{ rendezVous.heure ? rendezVous.heure|date('H:i') : 'Non défini' }}</td>
+                                <td>{{ rendezVous.medecin ? rendezVous.medecin.nom : 'Non défini' }}</td>
+                                <td>{{ rendezVous.service ? rendezVous.service.nom.value : 'Non défini' }}</td>
+                                <td>
+                                    <span class="badge rounded-pill text-white 
+                                        {% if rendezVous.rendezVousStatus == 'EnAttente' %} bg-warning 
+                                        {% elseif rendezVous.rendezVousStatus == 'Confirme' %} bg-success 
+                                        {% elseif rendezVous.rendezVousStatus == 'Annule' %} bg-danger 
+                                        {% else %} bg-secondary 
+                                        {% endif %}">
+                                        {{ rendezVous.rendezVousStatus ?? 'En Attente' }}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="fas fa-calendar-times fa-2x"></i><br>
+                                    Aucun rendez-vous trouvé.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+      </div>
+    </div>
+
+    {# Ajout des styles personnalisés #}
+    <style>
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.1);
+            transition: background-color 0.3s ease-in-out;
+        }
+        .card {
+            border-radius: 10px;
+              margin-top: -20px; 
+
+        }
+    </style>
+
+    {# Ajout de FontAwesome pour les icônes #}
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+{% endblock %}
