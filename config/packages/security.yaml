@@ -29,4 +29,4 @@ security:
         # Define access control rules
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/message/new, roles: ROLE_USER }  # Added access control for /message/new
+        - { path: ^/message/new, roles: UtilisateurRole }  # Added access control for /message/new

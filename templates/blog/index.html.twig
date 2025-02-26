@@ -16,6 +16,7 @@
                     <h5 class="card-title">{{ blog.title }}</h5>
                     <p class="card-text">{{ blog.content | slice(0, 100) }}...</p>
                     <a href="{{ path('app_blog_show', {'id': blog.id}) }}" class="btn btn-info">Read More</a>
+                    <a href="{{ path('app_blog_deleted') }}" class="btn btn-dark mt-3">View Deleted Blogs</a>
                 </div>
             </div>
         {% else %}

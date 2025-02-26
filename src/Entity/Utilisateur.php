@@ -1,29 +1,25 @@
 <?php
 
 // src/Entity/Utilisateur.php
+
 namespace App\Entity;
 
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
-class Utilisateur implements UserInterface,PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $password = null;
-
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Le nom est obligatoire.")]
@@ -45,7 +41,7 @@ class Utilisateur implements UserInterface,PasswordAuthenticatedUserInterface
     )]
     private ?string $Prenom = null;
 
-    #[ORM\Column(length: 255, unique: true)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "L'email est obligatoire.")]
     #[Assert\Email(message: "Veuillez entrer une adresse email valide.")]
     private ?string $Email = null;
@@ -83,24 +79,35 @@ class Utilisateur implements UserInterface,PasswordAuthenticatedUserInterface
     private ?MedecinSpecialite $medecinSpecilaite = null;
 
     #[ORM\ManyToOne(inversedBy: 'ListeUtilisateur')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotNull(message: "Le service est obligatoire.")]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Service $service = null;
 
-    // Getters and Setters...
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $password = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $resetToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $resetTokenExpiresAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+        return $this;
+    }
     public function getId(): ?int
     {
         return $this->id;
-    }
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password, UserPasswordHasherInterface $passwordHasher): void
-    {
-        $this->password = $passwordHasher->hashPassword($this, $password);
     }
 
     public function getNom(): ?string
@@ -202,28 +209,61 @@ class Utilisateur implements UserInterface,PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    // UserInterface methods
-    public function getRoles(): array
+    public function getPassword(): ?string
     {
-        // Return the roles of the user
-        // Can be an array like ['ROLE_USER', 'ROLE_ADMIN'] based on the `utilisateurRole` value
-        return [$this->utilisateurRole->value];  // Assuming UtilisateurRole is an Enum
+        return $this->password;
     }
 
-    public function getSalt(): ?string
+    public function setPassword(?string $password): static
     {
-        // Symfony uses bcrypt/argon2 by default, so you don't need to implement this method.
-        return null;
+        $this->password = $password;
+        return $this;
     }
 
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+        return $this;
+    }
+
+    public function getResetTokenExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->resetTokenExpiresAt;
+    }
+
+    public function setResetTokenExpiresAt(?\DateTimeInterface $resetTokenExpiresAt): static
+    {
+        $this->resetTokenExpiresAt = $resetTokenExpiresAt;
+        return $this;
+    }
+
+    /**
+     * Returns the identifier used for authentication (e.g., email).
+     */
     public function getUserIdentifier(): string
     {
-        return $this->Email; // Return email as the unique user identifier
+        return (string) $this->Email;
     }
 
-    public function eraseCredentials()
+    /**
+     * Returns the roles granted to the user.
+     */
+    public function getRoles(): array
     {
-        // If you store sensitive data in your entity, clear it here
+        // Map the enum value to a Symfony role
+        return ['ROLE_' . strtoupper($this->utilisateurRole->value)];
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
     }
 }
-

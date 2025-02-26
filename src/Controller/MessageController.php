@@ -14,19 +14,25 @@ use App\Entity\Blog;
 
 class MessageController extends AbstractController
 {
-    #[Route('/message/new', name: 'app_message_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, Blog $blog, EntityManagerInterface $entityManager)
+    #[Route('/message/new/{blog_id}', name: 'app_message_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, int $blog_id, EntityManagerInterface $entityManager)
     {
+        $blog = $entityManager->getRepository(Blog::class)->find($blog_id);
+
+        if (!$blog) {
+            throw $this->createNotFoundException('Blog not found.');
+        }
+
         $message = new Message();
         $message->setDateEnvoi(new \DateTime());
-        $utilisateur = $this->getUser(); // Get the logged-in user
+        $utilisateur = $this->getUser();
 
         if (!$utilisateur instanceof Utilisateur) {
             throw $this->createAccessDeniedException('You must be logged in to send a message.');
         }
 
-        $message->setAuthor($utilisateur); // Set the logged-in user as the author
-        $message->setBlog($blog); // Associate the message with the blog
+        $message->setAuthor($utilisateur);
+        $message->setBlog($blog);
 
         $form = $this->createForm(MessageType::class, $message);
         $form->handleRequest($request);
@@ -35,15 +41,16 @@ class MessageController extends AbstractController
             $entityManager->persist($message);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_message_index');  // Redirect to the message index page
+            return $this->redirectToRoute('app_message_index');
         }
 
         return $this->render('message/new.html.twig', [
             'message' => $message,
             'form' => $form->createView(),
-            'blog' => $blog, // Pass the blog to the template
+            'blog' => $blog,
         ]);
     }
+
 
     #[Route('/message', name: 'app_message_index')]
     public function index(EntityManagerInterface $entityManager): Response

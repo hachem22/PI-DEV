@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class MessageType extends AbstractType
 {
@@ -23,7 +25,17 @@ class MessageType extends AbstractType
                 'choice_label' => 'title', // Display blog title in dropdown
                 'attr' => ['class' => 'form-control'],
                 'required' => true
-            ]);
+            ])
+            ->add('content', TextareaType::class, [
+                'label' => 'Your Message',
+                'attr' => ['class' => 'form-control', 'rows' => 4],
+                'constraints' => [
+                    new Assert\NotBlank(['message' => 'Message cannot be empty']),
+                    new Assert\Length(['min' => 5, 'minMessage' => 'Message must be at least 5 characters']),
+                ],
+            ])
+
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

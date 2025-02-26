@@ -1,8 +1,5 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}{{ blog.title }}{% endblock %}
-
 {% block body %}
+    <link rel="stylesheet" href="{{ asset('Styles/Styles_blog/Style_show_blog.css') }}">
     <div class="container mt-5">
         <h1 class="text-center mb-4">{{ blog.title }}</h1>
 
@@ -16,6 +13,9 @@
             <a href="{{ path('app_blog_edit', {'id': blog.id}) }}" class="btn btn-warning">Edit</a>
             <form action="{{ path('app_blog_delete', {'id': blog.id}) }}" method="POST" style="display:inline;">
                 <button type="submit" class="btn btn-danger">Delete</button>
+                <div class="mt-4">
+                    <a href="{{ path('app_blog_message', {'id': blog.id}) }}" class="btn btn-info">📩 Contact Author</a>
+                </div>
             </form>
         </div>
     </div>

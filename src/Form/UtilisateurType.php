@@ -14,6 +14,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 
 class UtilisateurType extends AbstractType
 {
@@ -27,8 +29,11 @@ class UtilisateurType extends AbstractType
             ->add('Tel', TextType::class)
             ->add('utilisateurRole', ChoiceType::class, [
                 'choices' => array_combine(
-                    array_map(fn($role) => $role->value, UtilisateurRole::cases()),
-                    UtilisateurRole::cases()
+                    array_map(
+                        fn($role) => $role->value,
+                        array_filter(UtilisateurRole::cases(), fn($role) => !in_array($role->value, ['Administrateur', 'Patient']))
+                    ),
+                    array_filter(UtilisateurRole::cases(), fn($role) => !in_array($role->value, ['Administrateur', 'Patient']))
                 ),
                 'choice_label' => fn($choice) => $choice->value,
                 'choice_value' => fn(?UtilisateurRole $role) => $role ? $role->value : null,
@@ -37,9 +42,10 @@ class UtilisateurType extends AbstractType
                     'class' => 'js-role-selector' // JavaScript will listen to this
                 ]
             ])
+
             ->add('service', EntityType::class, [
                 'class' => Service::class,
-                'choice_label' => 'name', // Adjust based on the actual property name in Service entity
+                'choice_label' => 'Nom', // Adjust based on the actual property name in Service entity
                 'placeholder' => 'Select a service',
                 'required' => false, // Make it optional and controlled by JavaScript
                 'attr' => ['class' => 'js-service-field'] // JavaScript control
@@ -57,6 +63,11 @@ class UtilisateurType extends AbstractType
                 'choice_value' => fn(?MedecinSpecialite $specialite) => $specialite ? $specialite->value : null,
                 'required' => false,
                 'attr' => ['class' => 'medecin-field']
+            ])
+            ->add('image', FileType::class, [
+                'label' => 'Profile Image',
+                'required' => false, // The image is optional
+                'mapped' => false, // This field is not mapped to the entity
             ]);
 
         // Handle dynamic form update when the role is changed
@@ -65,7 +76,7 @@ class UtilisateurType extends AbstractType
 
             // Hide service field unless the role is Medecin, Infirmier, or Responsable
             if (!isset($data['utilisateurRole']) || !in_array($data['utilisateurRole'], ['Medecin', 'Infirmier', 'Responsable'])) {
-                unset($data['service']);
+                $data['service'] = null;
                 $event->setData($data);
             }
 

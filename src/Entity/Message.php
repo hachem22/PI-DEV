@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Enum\UtilisateurRole;
 use App\Repository\MessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,27 +17,21 @@ class Message
     #[ORM\Column(type: "text")]
     private ?string $content = null;
 
-    /*#[ORM\ManyToOne(targetEntity: Blog::class)]
+    #[ORM\ManyToOne(targetEntity: Blog::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Blog $author = null; // Foreign key linking to Blog entity */
-
+    private ?Blog $blog = null; // ✅ Relation correcte avec Blog
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: "messages")]
     #[ORM\JoinColumn(nullable: false)]
-    private ?UtilisateurRole $author = null;
+    private ?Utilisateur $author = null; // ✅ Correction de UtilisateurRole → Utilisateur
 
-    public function getAuthor(): ?UtilisateurRole
-    {
-        return $this->author;
-    }
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $dateEnvoi = null;
 
-    public function setAuthor(?UtilisateurRole $author): self
-    {
-        $this->author = $author;
-        return $this;
-    }
+    #[ORM\Column(type: 'string', length: 20, options: ["default" => "en_attente"])]
+    private string $status = "en_attente";  // ✅ Statut par défaut
 
-
+    // 🔥 Getters & Setters
 
     public function getId(): ?int
     {
@@ -56,10 +49,28 @@ class Message
         return $this;
     }
 
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?\DateTimeInterface $dateEnvoi = null;
+    public function getBlog(): ?Blog
+    {
+        return $this->blog;
+    }
 
-    // Getter and Setter for dateEnvoi
+    public function setBlog(?Blog $blog): self
+    {
+        $this->blog = $blog;
+        return $this;
+    }
+
+    public function getAuthor(): ?Utilisateur
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Utilisateur $author): self
+    {
+        $this->author = $author;
+        return $this;
+    }
+
     public function getDateEnvoi(): ?\DateTimeInterface
     {
         return $this->dateEnvoi;
@@ -71,10 +82,6 @@ class Message
         return $this;
     }
 
-    #[ORM\Column(type: 'string', length: 20, options: ["default" => "en_attente"])]
-    private string $status = "en_attente";  // Default value: "en_attente"
-
-    // Getters & Setters
     public function getStatus(): string
     {
         return $this->status;
@@ -85,5 +92,4 @@ class Message
         $this->status = $status;
         return $this;
     }
-
 }

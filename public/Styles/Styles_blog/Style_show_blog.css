@@ -1,0 +1,92 @@
+/* Style général */
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+/* Conteneur principal */
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Titre du blog */
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* Carte contenant le contenu */
+.card {
+    border: none;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Auteur */
+h4 {
+    color: #6c757d;
+    font-size: 1.2rem;
+}
+
+/* Contenu du blog */
+p {
+    font-size: 1rem;
+    color: #495057;
+    line-height: 1.6;
+}
+
+/* Boutons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    border: none;
+}
+
+.btn-warning {
+    background: #ffc107;
+    border: none;
+    color: #212529;
+}
+
+.btn-danger {
+    background: #dc3545;
+    border: none;
+}
+
+/* Effet au survol */
+.btn:hover {
+    opacity: 0.8;
+}
+
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
