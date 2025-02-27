@@ -15,7 +15,7 @@ use App\Entity\Blog;
 class MessageController extends AbstractController
 {
     #[Route('/message/new/{blog_id}', name: 'app_message_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, int $blog_id, EntityManagerInterface $entityManager)
+    public function new(Request $request, int $blog_id, EntityManagerInterface $entityManager): Response
     {
         $blog = $entityManager->getRepository(Blog::class)->find($blog_id);
 
@@ -24,7 +24,7 @@ class MessageController extends AbstractController
         }
 
         $message = new Message();
-        $message->setDateEnvoi(new \DateTime());
+        $message->setDateEnvoi(new \DateTime('now'));
         $utilisateur = $this->getUser();
 
         if (!$utilisateur instanceof Utilisateur) {

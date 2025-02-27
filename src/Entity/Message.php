@@ -17,9 +17,12 @@ class Message
     #[ORM\Column(type: "text")]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(targetEntity: Blog::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Blog $blog = null; // ✅ Relation correcte avec Blog
+
+    #[ORM\ManyToOne(targetEntity: Blog::class, inversedBy: "messages")]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?Blog $blog = null;
+
+
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: "messages")]
     #[ORM\JoinColumn(nullable: false)]
@@ -71,14 +74,11 @@ class Message
         return $this;
     }
 
-    public function getDateEnvoi(): ?\DateTimeInterface
-    {
-        return $this->dateEnvoi;
-    }
-
-    public function setDateEnvoi(?\DateTimeInterface $dateEnvoi): self
+    // In the Message entity
+    public function setDateEnvoi(\DateTimeInterface $dateEnvoi): self
     {
         $this->dateEnvoi = $dateEnvoi;
+
         return $this;
     }
 
@@ -92,4 +92,5 @@ class Message
         $this->status = $status;
         return $this;
     }
+
 }

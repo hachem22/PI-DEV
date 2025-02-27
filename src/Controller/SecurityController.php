@@ -33,38 +33,6 @@ class SecurityController extends AbstractController
             'error' => $error,
         ]);
     }
-    #[Route('/dashboard', name: 'app_dashboard')]
-    public function dashboard(): Response
-    {
-        // Get the current user and ensure it's an instance of Utilisateur
-        $user = $this->getUser();
-
-        if (!$user instanceof Utilisateur) {
-            throw new \RuntimeException('Expected an instance of Utilisateur.');
-        }
-
-        // Debugging: Check the type of the user object
-        dump(get_class($user));
-
-        // Debugging: Check if the method exists
-        dump(method_exists($user, 'getUtilisateurRole'));
-
-        // Debugging: Check the authenticated user's roles
-        dump($user->getRoles());
-        dump($user->getUtilisateurRole());
-
-        // Redirect based on role
-        if (in_array('ROLE_ADMINISTRATEUR', $user->getRoles())) {
-            return $this->redirectToRoute('app_utilisateur_index');
-        } elseif (in_array('ROLE_PHARMACIEN', $user->getRoles())) {
-            return $this->redirectToRoute('app_stock_pharmacie_index');
-        } elseif (in_array('ROLE_PATIENT', $user->getRoles())) {
-            return $this->redirectToRoute('app_patient_index');
-        }
-
-        // Default fallback
-        return $this->redirectToRoute('app_login');
-    }
     #[Route('/logout', name: 'app_logout')]
     public function logout(): void
     {
@@ -113,6 +81,31 @@ class SecurityController extends AbstractController
     }
 
     // src/Controller/SecurityController.php
+    #[Route('/dashboard', name: 'app_dashboard')]
+    public function dashboard(): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user instanceof Utilisateur) {
+            throw new \RuntimeException('Expected an instance of Utilisateur.');
+        }
+
+        // Vérifier si la méthode getUtilisateurRole() existe et est utilisable
+        if (!method_exists($user, 'getUtilisateurRole')) {
+            throw new \RuntimeException('The method getUtilisateurRole does not exist.');
+        }
+
+        $role = $user->getUtilisateurRole(); // Supposons que c'est une string comme "ROLE_PATIENT"
+
+        return match ($role) {
+            'ROLE_ADMINISTRATEUR' => $this->redirectToRoute('app_utilisateur_index'),
+            'ROLE_PHARMACIEN' => $this->redirectToRoute('app_stock_pharmacie_index'),
+            'ROLE_PATIENT' => $this->redirectToRoute('app_patient_index'),
+            'ROLE_MEDECIN' => $this->redirectToRoute('app_message_index'), // Ajouté pour médecin
+            default => $this->redirectToRoute('app_login'),
+        };
+    }
+
 
     #[Route('/reset-password/{token}', name: 'app_reset_password')]
     public function resetPassword(
