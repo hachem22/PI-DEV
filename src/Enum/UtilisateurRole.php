@@ -11,4 +11,7 @@ enum UtilisateurRole: string
     case Responsable = 'Responsable';
     case Administrateur = 'Administrateur';
     case FemmeDeMenage = 'Femme de menage';
+    case ADMIN = 'admin';
+    case USER = 'user';
+    case DOCTOR = 'doctor';
 }

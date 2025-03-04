@@ -4,17 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48a21b99-9f65-4520-94e3-09543eb58b1f" name="Changes" comment=" change beaucoup de chose">
+    <list default="true" id="48a21b99-9f65-4520-94e3-09543eb58b1f" name="Changes" comment=" change beaucoup de chose2">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/animated.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/animated.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/fontawesome.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/fontawesome.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/owl.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/owl.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/assets/css/templatemo-chain-app-dev.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/assets/css/templatemo-chain-app-dev.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/Styles/Styles_blog/Style_show_blog.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/Styles/Styles_blog/Style_show_blog.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/BlogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BlogController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/MessageController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SecurityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/SentimentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SentimentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Blog.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Blog.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/Message.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Message.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Utilisateur.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Utilisateur.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Enum/UtilisateurRole.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Enum/UtilisateurRole.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/BlogType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/BlogType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/MessageType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/MessageType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/BlogRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/BlogRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/SentimentAnalysisService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/SentimentAnalysisService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/blog/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/message/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/message/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/security/login.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,6 +193,7 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/cli-parser" />
       <path value="$PROJECT_DIR$/vendor/sebastian/version" />
       <path value="$PROJECT_DIR$/vendor/myclabs/php-enum" />
+      <path value="$PROJECT_DIR$/vendor/php-ai/php-ml" />
     </include_path>
   </component>
   <component name="ProblemsViewState">
@@ -216,9 +230,10 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\asus\PhpstormProjects\PI-DEV1\templates" />
+      <recent name="C:\Users\asus\PhpstormProjects\PI-DEV1\templates\blog" />
       <recent name="C:\Users\asus\PhpstormProjects\PI-DEV1\public\assets\fonts" />
       <recent name="C:\Users\asus\PhpstormProjects\PI-DEV1\public" />
-      <recent name="C:\Users\asus\PhpstormProjects\PI-DEV1\templates" />
     </key>
   </component>
   <component name="RunManager">
@@ -261,7 +276,18 @@
       <workItem from="1740514994770" duration="6245000" />
       <workItem from="1740567478255" duration="5347000" />
       <workItem from="1740599239683" duration="4593000" />
-      <workItem from="1740638289845" duration="4002000" />
+      <workItem from="1740638289845" duration="4208000" />
+      <workItem from="1740644439426" duration="1866000" />
+      <workItem from="1740832789391" duration="12607000" />
+      <workItem from="1740991053656" duration="6348000" />
+      <workItem from="1741035506517" duration="4538000" />
+      <workItem from="1741071155625" duration="6658000" />
+      <workItem from="1741094322347" duration="705000" />
+      <workItem from="1741095114676" duration="510000" />
+      <workItem from="1741117209840" duration="393000" />
+      <workItem from="1741117930431" duration="301000" />
+      <workItem from="1741119347580" duration="532000" />
+      <workItem from="1741120953397" duration="2268000" />
     </task>
     <task id="LOCAL-00001" summary="h">
       <option name="closed" value="true" />
@@ -311,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1740603785458</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary=" change beaucoup de chose">
+      <option name="closed" value="true" />
+      <created>1740642477934</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1740642477934</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -333,6 +367,9 @@
     <MESSAGE value="fix design" />
     <MESSAGE value="crud and template of blog and message but there is errors about message crud and sécurity" />
     <MESSAGE value="workspace.xml change" />
-    <option name="LAST_COMMIT_MESSAGE" value="workspace.xml change" />
+    <MESSAGE value=" change beaucoup de chose1" />
+    <MESSAGE value=" change beaucoup de chose" />
+    <MESSAGE value=" change beaucoup de chose2" />
+    <option name="LAST_COMMIT_MESSAGE" value=" change beaucoup de chose2" />
   </component>
 </project>

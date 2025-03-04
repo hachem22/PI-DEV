@@ -48,22 +48,6 @@ class BlogRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function findAllActiveBlogs()
-    {
-        return $this->createQueryBuilder('b')
-            ->where('b.deletedAt IS NULL')
-            ->orderBy('b.id', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
-    public function findDeletedBlogs(): array
-    {
-        return $this->createQueryBuilder('b')
-            ->where('b.deletedAt IS NOT NULL')
-            ->orderBy('b.deletedAt', 'DESC')
-            ->getQuery()
-            ->getResult();
-    }
 }
 
 

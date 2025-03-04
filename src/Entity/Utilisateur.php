@@ -224,4 +224,13 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
     }
+    public function __toString()
+    {
+        return $this->getNom(); // Or any other meaningful string representation
+    }
+
+    public function getUsername(): string
+    {
+        return $this->Email;
+    }
 }

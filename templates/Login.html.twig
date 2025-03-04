@@ -6,54 +6,122 @@
     <title>Connexion</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
+        /* General Body Styling */
         body {
             background: linear-gradient(135deg, #667eea, #764ba2);
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
         }
+
+        /* Login Container */
         .login-container {
             background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 400px;
+            animation: fadeIn 0.5s ease-in-out;
         }
-        .form-control {
-            border-radius: 5px;
+
+        /* Form Styling */
+        .login-container h2 {
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
-        .btn-primary {
+
+        .login-container .form-label {
+            font-weight: 500;
+            color: #555;
+        }
+
+        .login-container .form-control {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-container .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Button Styling */
+        .login-container .btn-primary {
             background: #667eea;
             border: none;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.3s ease;
         }
-        .btn-primary:hover {
+
+        .login-container .btn-primary:hover {
             background: #5a67d8;
         }
-        .form-footer {
+
+        /* Link Styling */
+        .login-container .form-footer {
             text-align: center;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .login-container .form-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .login-container .form-footer a:hover {
+            color: #5a67d8;
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <h2 class="text-center mb-4">Connexion</h2>
-        <form method="POST" action="{{ path('Login') }}">
-            
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Mot de passe</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-        </form>
+<div class="login-container">
+    <h2 class="text-center mb-4">Connexion</h2>
+    <form method="POST" action="{{ path('Login') }}">
+        <!-- Email Field -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Entrez votre email" required>
+        </div>
+        <!-- Password Field -->
+        <div class="mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Entrez votre mot de passe" required>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+    </form>
+    <!-- Footer Links -->
+    <div class="form-footer mt-3">
+        <a href="#">Mot de passe oublié ?</a> | <a href="#">Créer un compte</a>
     </div>
+</div>
 
 </body>
 </html>

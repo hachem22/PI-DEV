@@ -16,11 +16,13 @@ security:
             provider: app_user_provider
             form_login:
                 login_path: app_login
-                check_path: app_login
-                default_target_path: app_utilisateur_index
+                check_path: app_login_check
+                default_target_path: app_blog_index
             logout:
                 path: app_logout
                 target: app_login
     access_control:
         - { path: ^/login, roles: PUBLIC_ACCESS }
-        - { path: ^/, roles: ROLE_USER } # Allow access to all authenticated users
+        - { path: ^/message, roles: ROLE_USER } # Allow only logged-in users to access messages
+        - { path: ^/blog/\d+/message, roles: ROLE_USER } # Ensure message route security
+        - { path: ^/, roles: ROLE_USER } # General restriction for other routes

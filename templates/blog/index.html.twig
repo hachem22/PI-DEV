@@ -1,26 +1,134 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}All Blog Posts{% endblock %}
-
 {% block body %}
     <div class="container mt-5">
         <h1 class="text-center mb-4">All Blog Posts</h1>
 
+        <!-- Create New Blog Button -->
         <div class="mb-4 text-end">
-            <a href="{{ path('app_blog_new') }}" class="btn btn-primary">Create New Blog</a>
+            <a href="{{ path('app_blog_new') }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-plus-circle"></i> Create New Blog
+            </a>
         </div>
 
-        {% for blog in blogs %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">{{ blog.title }}</h5>
-                    <p class="card-text">{{ blog.content | slice(0, 100) }}...</p>
-                    <a href="{{ path('app_blog_show', {'id': blog.id}) }}" class="btn btn-info">Read More</a>
-                    <a href="{{ path('app_blog_deleted') }}" class="btn btn-dark mt-3">View Deleted Blogs</a>
+        <!-- Blog Posts List -->
+        <div class="row">
+            {% for blog in blogs %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">{{ blog.title }}</h5>
+                            <p class="card-text text-muted">{{ blog.content | slice(0, 100) }}...</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{{ path('app_blog_show', {'id': blog.id}) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye"></i> Read More
+                                </a>
+                                <small class="text-muted">Posted on {{ blog.createdAt|date('Y-m-d') }}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <form method="post" action="{{ path('app_blog_delete', {'id': blog.id}) }}" onsubmit="return confirm('Are you sure you want to permanently delete this blog post?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ blog.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        {% else %}
-            <p>No blog posts available.</p>
-        {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        No blog posts available.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <!-- Custom CSS -->
+    <style>
+        /* General Styling */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            color: #333;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background-color: #667eea;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #5a67d8;
+        }
+
+        .btn-outline-primary {
+            border-color: #667eea;
+            color: #667eea;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #667eea;
+            color: #fff;
+        }
+
+        .btn-danger {
+            background-color: #e3342f;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #cc1f1a;
+        }
+
+        /* Alert Styling */
+        .alert-info {
+            background-color: #e9f5ff;
+            border-color: #b8daff;
+            color: #004085;
+        }
+
+        /* Responsive Grid */
+        @media (max-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
 {% endblock %}

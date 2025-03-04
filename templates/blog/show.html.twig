@@ -4,19 +4,34 @@
         <h1 class="text-center mb-4">{{ blog.title }}</h1>
 
         <div class="card shadow-lg p-4">
-            <h4>Author: {{ blog.author }}</h4>
+             <!-- Assuming 'username' is a property of Utilisateur -->
             <p>{{ blog.content }}</p>
+
+            <!-- Affichage du sentiment -->
+            {% if blog.sentiment %}
+                <div class="sentiment-container mt-3">
+                    <strong>Sentiment:</strong>
+                    <span class="sentiment-badge badge
+                        {% if blog.sentiment == 'positive' %}bg-success
+                        {% elseif blog.sentiment == 'negative' %}bg-danger
+                        {% else %}bg-secondary
+                        {% endif %}">
+                        {{ blog.sentiment }}
+                    </span>
+                </div>
+            {% else %}
+                <div class="sentiment-container mt-3">
+                    <strong>Sentiment:</strong>
+                    <span class="text-muted">Non analysé</span>
+                </div>
+            {% endif %}
+
         </div>
 
-        <div class="mt-4">
+        <div class="button-container">
             <a href="{{ path('app_blog_index') }}" class="btn btn-secondary">Back to Blog List</a>
             <a href="{{ path('app_blog_edit', {'id': blog.id}) }}" class="btn btn-warning">Edit</a>
-            <form action="{{ path('app_blog_delete', {'id': blog.id}) }}" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger">Delete</button>
-                <div class="mt-4">
-                    <a href="{{ path('app_blog_message', {'id': blog.id}) }}" class="btn btn-info">📩 Contact Author</a>
-                </div>
-            </form>
+            <a href="{{ path('app_blog_message', {'id': blog.id}) }}" class="btn btn-info">📩 Contact Author</a>
         </div>
     </div>
 {% endblock %}

@@ -1,13 +1,19 @@
+# Autoload routes from controllers using attributes
 controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+# Manually defined routes
 message_new:
     path: /message/new
     controller: App\Controller\MessageController::newMessage
+
 login:
     path: /login
     controller: App\Controller\SecurityController::login
 
-
+# Route for login form submission (used by Symfony's security system)
+app_login_check:
+    path: /login_check
