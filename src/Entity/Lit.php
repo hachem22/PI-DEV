@@ -33,8 +33,8 @@ class Lit
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank(message: "Le statut du lit ne peut pas être vide.")]
-    
-    private string $type ;
+   
+    private string $type  ;
 
     #[ORM\ManyToOne(inversedBy: 'lits')]
     private ?Chambre $chambre = null;

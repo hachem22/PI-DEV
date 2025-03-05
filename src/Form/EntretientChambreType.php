@@ -11,7 +11,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
+use App\Entity\Utilisateur;
+use App\Enum\UtilisateurRole;
+use Doctrine\ORM\EntityRepository;
 
 class EntretientChambreType extends AbstractType
 {
@@ -41,13 +47,38 @@ class EntretientChambreType extends AbstractType
                 ),
                 'choice_label' => fn($choice) => $choice->value,
             ])
-            ->add('details')
+            ->add('details', TextType::class, [
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Description (sera complétée automatiquement si laissée vide)'
+                ]
+            ])
+            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+                $form = $event->getForm();
+                $data = $event->getData();
+    
+                if ($data && $data->getType() && empty($data->getDetails())) {
+                    $data->setDetails($data->autoCompleteDescription());
+                }
+            })
             ->add('chambre', EntityType::class, [
                 'class' => Chambre::class,
                 'choice_label' => 'num', 
                 'label' => 'Chambre associée',
                 'placeholder' => 'Sélectionnez une chambre',
+            ])
+            ->add('femmedemenage', EntityType::class, [
+                'class' => Utilisateur::class,
+                'choice_label' => 'nom',
+                'placeholder' => 'Sélectionner femme de ménage',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->where('u.utilisateurRole = :role')
+                        ->setParameter('role', UtilisateurRole::FemmeDeMenage);
+                        
+                },
             ]);
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

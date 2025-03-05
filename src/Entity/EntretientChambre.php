@@ -5,7 +5,10 @@ namespace App\Entity;
 use App\Enum\StatutEntretientChambre;
 use App\Enum\TypeEntretient;
 use App\Repository\EntretientChambreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use App\Enum\UtilisateurRole;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -48,6 +51,14 @@ class EntretientChambre
     #[ORM\ManyToOne(inversedBy: 'entretient')]
     #[Assert\NotNull(message: "Une chambre doit être associée à l'entretien.")]
     private ?Chambre $chambre = null;
+
+    #[ORM\ManyToOne(targetEntity:"Utilisateur")]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Utilisateur $femmedemenage = null;
+
+    
+
+    
 
     public function getId(): ?int
     {
@@ -154,4 +165,40 @@ class EntretientChambre
             }
         }
     }
+
+    public function getFemmedemenage(): ?Utilisateur
+    {
+        return $this->femmedemenage;
+    }
+
+    public function setFemmedemenage(?Utilisateur $femmedemenage): static
+    {
+        $this->femmedemenage = $femmedemenage;
+
+        return $this;
+    }
+    public function autoCompleteDescription(): ?string
+{
+    if ($this->type === null) {
+        return null;
+    }
+
+    switch ($this->type) {
+        case TypeEntretient::netoyage:
+            return "Nettoyage complet de la chambre";
+        
+        case TypeEntretient::repartition:
+            return "Vérification et réparation des équipements";
+        
+        case TypeEntretient::autre:
+            return "Travaux de rénovation et mise à jour";
+        
+        
+        
+        default:
+            return null;
+    }
+}
+
+    
 }

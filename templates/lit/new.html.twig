@@ -1,69 +1,97 @@
-{% extends "utilisateur/sidenav.html.twig" %}
-{% block body %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<style>
-    .btn i {
-        margin-right: 5px;
-    }
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-    }
-    .card {
-        max-width: 600px;
-        margin: auto;
-    }
-</style>
 
-<div class="container mt-5">
-    <div class="card shadow-lg p-4 rounded-3">
-        <h2 class="text-center mb-4"><i class="fas fa-bed"></i> Créer un nouveau lit</h2>
+{% block content %}
+    <!doctype html>
+    <html lang="fr" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default" data-assets-path="{{ asset('../assets/') }}" data-template="vertical-menu-template-free" data-style="light">
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+            <title>Créer un Nouveau Lit</title>
+            <meta name="description" content="" />
+            <link rel="icon" type="image/x-icon" href="{{ asset('../assets/img/favicon/favicon.ico') }}" />
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+            <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+            <link rel="stylesheet" href="{{ asset('../assets/vendor/fonts/boxicons.css') }}" />
+            <link rel="stylesheet" href="{{ asset('../assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+            <link rel="stylesheet" href="{{ asset('../assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+            <link rel="stylesheet" href="{{ asset('../assets/css/demo.css') }}" />
+            <link rel="stylesheet" href="{{ asset('../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+            <script src="{{ asset('../assets/vendor/js/helpers.js') }}"></script>
+            <script src="{{ asset('../assets/js/config.js') }}"></script>
+        </head>
 
-        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+        {% block body %}
+            <div class="layout-wrapper layout-content-navbar">
+                <div class="layout-container">
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        <div class="row">
+                            <div class="col-xl" style="margin-left: 250px; margin-top: 300px; width: 500px;">
+                                <div class="card mb-6">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0">Créer un Nouveau Lit</h5>
+                                        <small class="text-body float-end">Remplissez les détails</small>
+                                    </div>
+                                    <div class="card-body">
+                                        {{ form_start(form, {'attr': {'novalidate': 'novalidate' }}) }}
+                                        
+                                        <div class="mb-6">
+                                            <label class="form-label" for="form.num">
+                                                <i class="bx bx-hash"></i> Numéro du lit
+                                            </label>
+                                            {{ form_widget(form.num, {'attr': {'class': 'form-control' }}) }}
+                                            {% if form.num.vars.errors|length > 0 %}
+                                                <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                                                    {{ form_errors(form.num) }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
 
-        <div class="mb-3">
-            {{ form_label(form.num, 'Numéro du lit', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.num, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
-            {{ form_errors(form.num) }}
-        </div>
+                                        <div class="mb-6">
+                                            <label class="form-label" for="form.type">
+                                                <i class="bx bx-bed"></i> Type de lit
+                                            </label>
+                                            {{ form_widget(form.type, {'attr': {'class': 'form-select' }}) }}
+                                            {% if form.type.vars.errors|length > 0 %}
+                                                <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                                                    {{ form_errors(form.type) }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
 
-        <div class="mb-3">
-            {{ form_label(form.type, 'Type de lit', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.type, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
-            {{ form_errors(form.type) }}
-        </div>
+                                        <div class="mb-6">
+                                            <label class="form-label" for="form.chambre">
+                                                <i class="bx bx-building"></i> Chambre associée
+                                            </label>
+                                            {{ form_widget(form.chambre, {'attr': {'class': 'form-select' }}) }}
+                                            {% if form.chambre.vars.errors|length > 0 %}
+                                                <span style="color: red; font-size: 0.9em; margin-top: 0.5rem;">
+                                                    {{ form_errors(form.chambre) }}
+                                                </span>
+                                            {% endif %}
+                                        </div>
 
-        <div class="mb-3">
-            {{ form_label(form.chambre, 'Chambre associée', {'label_attr': {'class': 'form-label'}}) }}
-            {{ form_widget(form.chambre, {'attr': {'class': 'form-select', 'required': 'required'}}) }}
-            {{ form_errors(form.chambre) }}
-        </div>
-
-        <div class="d-grid gap-2 mt-4">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Créer le lit
-            </button>
-        </div>
-
-        {{ form_end(form) }}
-    </div>
-</div>
-
-<script>
-    (function () {
-        'use strict'
-        var forms = document.querySelectorAll('.needs-validation')
-        Array.prototype.slice.call(forms).forEach(function (form) {
-            form.addEventListener('submit', function (event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
-</script>
+                                        <button class="btn btn-primary btn-lg">Créer le lit</button>
+                                        {{ form_end(form) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    let form = document.getElementById('litForm');
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    });
+                });
+            </script>
+        {% endblock %}
+    </html>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\EntretientChambre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Enum\StatutEntretientChambre;
 
 /**
  * @extends ServiceEntityRepository<EntretientChambre>
@@ -40,4 +41,15 @@ class EntretientChambreRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    
+    public function findExpiredEntretients(\DateTimeInterface $currentDateTime)
+{
+    return $this->createQueryBuilder('e')
+        ->where('e.datefin < :currentDateTime')  // Cela compare à la fois la date et l'heure
+        ->andWhere('e.statut != :statut')
+        ->setParameter('currentDateTime', $currentDateTime)
+        ->setParameter('statut', StatutEntretientChambre::termine)
+        ->getQuery()
+        ->getResult();
+}
 }

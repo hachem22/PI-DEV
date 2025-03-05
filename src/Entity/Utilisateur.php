@@ -7,6 +7,8 @@ namespace App\Entity;
 use App\Enum\UtilisateurRole;
 use App\Enum\MedecinSpecialite;
 use App\Repository\UtilisateurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -90,6 +92,19 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $resetTokenExpiresAt = null;
+
+    /**
+     * @var Collection<int, EntretientChambre>
+     */
+    #[ORM\OneToMany(targetEntity: EntretientChambre::class, mappedBy: 'femmedemenage')]
+    private Collection $entretientChambres;
+
+    
+
+    public function __construct()
+    {
+        $this->entretientChambres = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -252,4 +267,39 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
     }
+
+    /**
+     * @return Collection<int, EntretientChambre>
+     */
+    public function getEntretientChambres(): Collection
+    {
+        return $this->entretientChambres;
+    }
+
+    public function addEntretientChambre(EntretientChambre $entretientChambre): static
+    {
+        if (!$this->entretientChambres->contains($entretientChambre)) {
+            $this->entretientChambres->add($entretientChambre);
+            $entretientChambre->setFemmedemenage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEntretientChambre(EntretientChambre $entretientChambre): static
+    {
+        if ($this->entretientChambres->removeElement($entretientChambre)) {
+            // set the owning side to null (unless already changed)
+            if ($entretientChambre->getFemmedemenage() === $this) {
+                $entretientChambre->setFemmedemenage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
+   
+
+    
 }
