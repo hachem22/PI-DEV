@@ -14,11 +14,24 @@ use App\Form\MessageType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Service\SentimentAnalysisService;
 use App\Entity\Message;
+use Twilio\Rest\Client;
+use App\Entity\Utilisateur;
+
+
 
 
 #[Route('/blog')]
 final class BlogController extends AbstractController
 {
+
+    private $twilioClient;
+
+    // Injection du client Twilio via le constructeur
+    public function __construct(Client $twilioClient)
+    {
+        $this->twilioClient = $twilioClient;
+    }
+
     #[Route(name: 'app_blog_index', methods: ['GET'])]
     public function index(BlogRepository $blogRepository): Response
     {
@@ -40,6 +53,31 @@ final class BlogController extends AbstractController
 
             $entityManager->persist($blog);
             $entityManager->flush();
+
+
+
+            // Envoi d'un SMS via Twilio
+            try {
+                // Récupérer l'utilisateur connecté
+                $user = $this->getUser();
+
+                // Vérifier si l'utilisateur a un numéro de téléphone
+                if ($user && $user->getTel()) {
+                    $this->twilioClient->messages->create(
+                        "+216" . $user->getTel(), // Concaténation du préfixe et du numéro de téléphone
+                        [
+                            'from' => '+14422011386', // Votre numéro Twilio
+                            'body' => 'Un nouveau blog a été publié: ' . $blog->getTitle(),
+                        ]
+                    );
+                    $this->addFlash('success', 'Un SMS a été envoyé à votre numéro de téléphone.');
+                } else {
+                    $this->addFlash('warning', 'Aucun numéro de téléphone trouvé pour l\'utilisateur.');
+                }
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Une erreur est survenue lors de l\'envoi du SMS.');
+            }
+
 
             return $this->redirectToRoute('app_blog_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -136,5 +174,4 @@ final class BlogController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }
