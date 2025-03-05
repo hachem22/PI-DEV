@@ -39,6 +39,7 @@ final class BlogController extends AbstractController
             'blogs' => $blogRepository->findAll(),
         ]);
     }
+
     #[Route('/new', name: 'app_blog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SentimentAnalysisService $sentimentAnalysisService): Response
     {
@@ -174,4 +175,42 @@ final class BlogController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    #[Route('/stats', name: 'app_blog_stats', methods: ['GET'])]
+    public function stats(BlogRepository $blogRepository): Response
+    {
+        // Total number of blog posts
+        $totalPosts = $blogRepository->count([]);
+
+        // Posts by category
+        $postsByCategory = $blogRepository->createQueryBuilder('b')
+            ->select('b.category, COUNT(b.id) as postCount')
+            ->groupBy('b.category')
+            ->getQuery()
+            ->getResult();
+
+        // Posts by author
+        $postsByAuthor = $blogRepository->createQueryBuilder('b')
+            ->select('b.author, COUNT(b.id) as postCount')
+            ->groupBy('b.author')
+            ->getQuery()
+            ->getResult();
+
+        // Monthly content growth
+        $monthlyGrowth = $blogRepository->createQueryBuilder('b')
+            ->select("DATE_FORMAT(b.publishDate, '%Y-%m') as month, COUNT(b.id) as postCount")
+            ->groupBy('month')
+            ->orderBy('month')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('blog/stats.html.twig', [
+            'totalPosts' => $totalPosts,
+            'postsByCategory' => $postsByCategory,
+            'postsByAuthor' => $postsByAuthor,
+            'monthlyGrowth' => $monthlyGrowth,
+        ]);
+    }
+
+
 }

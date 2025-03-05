@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog Statistics{% endblock %}
+
+{% block body %}
+    <h1>Blog Statistics</h1>
+
+    <h2>Total Posts: {{ totalPosts }}</h2>
+
+    <h2>Posts by Category</h2>
+    <ul>
+        {% for category in postsByCategory %}
+            <li>{{ category.category }}: {{ category.postCount }} posts</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Posts by Author</h2>
+    <ul>
+        {% for author in postsByAuthor %}
+            <li>{{ author.author }}: {{ author.postCount }} posts</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Monthly Growth</h2>
+    <ul>
+        {% for month in monthlyGrowth %}
+            <li>{{ month.month }}: {{ month.postCount }} posts</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
