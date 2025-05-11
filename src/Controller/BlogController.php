@@ -65,7 +65,7 @@ final class BlogController extends AbstractController
                 // Vérifier si l'utilisateur a un numéro de téléphone
                 if ($user && $user->getTel()) {
                     $this->twilioClient->messages->create(
-                        "+216" . $user->getTel(), // Concaténation du préfixe et du numéro de téléphone
+                        "+216" .preg_replace('/[^0-9]/', '', $user->getTel()), // Concaténation du préfixe et du numéro de téléphone
                         [
                             'from' => '+14422011386', // Votre numéro Twilio
                             'body' => 'Un nouveau blog a été publié: ' . $blog->getTitle(),
@@ -114,20 +114,19 @@ final class BlogController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            // Analyse du sentiment du contenu du blog
-            $sentiment = $sentimentAnalysisService->analyze($blog->getContent());
-            $blog->setSentiment($sentiment); // Supposons que vous avez une méthode setSentiment dans votre entité Blog
-
+            $sentimentResult = $sentimentAnalysisService->analyzeWithConfidence($blog->getContent());
+            $blog->setSentiment($sentimentResult['sentiment']);
 
             $entityManager->flush();
-            return $this->redirectToRoute('app_blog_index', [], Response::HTTP_SEE_OTHER);
+
+            return $this->redirectToRoute('app_blog_index');
         }
 
+// Move this closing bracket outside the if condition
         return $this->render('blog/edit.html.twig', [
             'blog' => $blog,
             'form' => $form,
-            'authorName' => $nom, // Passer le nom à la vue si nécessaire
+            'authorName' => $nom, // Pass the author's name to the view
         ]);
     }
 
@@ -191,18 +190,20 @@ final class BlogController extends AbstractController
 
         // Posts by author
         $postsByAuthor = $blogRepository->createQueryBuilder('b')
-            ->select('b.author, COUNT(b.id) as postCount')
-            ->groupBy('b.author')
+            ->join('b.author', 'a')
+            ->select('a.id as authorId, COUNT(b.id) as postCount') // You might want to use a more meaningful field from Utilisateur
+            ->groupBy('a.id')
             ->getQuery()
             ->getResult();
 
         // Monthly content growth
         $monthlyGrowth = $blogRepository->createQueryBuilder('b')
-            ->select("DATE_FORMAT(b.publishDate, '%Y-%m') as month, COUNT(b.id) as postCount")
+            ->select("SUBSTRING(b.createdAt, 1, 7) as month, COUNT(b.id) as postCount")
             ->groupBy('month')
             ->orderBy('month')
             ->getQuery()
             ->getResult();
+
 
         return $this->render('blog/stats.html.twig', [
             'totalPosts' => $totalPosts,

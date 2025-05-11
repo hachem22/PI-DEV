@@ -40,7 +40,12 @@ when@prod:
             result_cache_driver:
                 type: pool
                 pool: doctrine.result_cache_pool
-
+            dql:
+                string_functions:
+                    DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
+                datetime_functions:
+                     YEAR: DoctrineExtensions\Query\Mysql\Year
+                     MONTH: DoctrineExtensions\Query\Mysql\Month
     framework:
         cache:
             pools:

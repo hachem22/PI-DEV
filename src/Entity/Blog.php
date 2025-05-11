@@ -14,15 +14,17 @@ class Blog
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
+    #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: "blogs")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Utilisateur $author = null;
+
     #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(targetEntity: Utilisateur::class)] // Relationship with Utilisateur
-    #[ORM\JoinColumn(nullable: false)] // Ensure author is required
-    private ?Utilisateur $author = null; // Add author property
+  // Add author property
 
     #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
     private ?string $category = null;

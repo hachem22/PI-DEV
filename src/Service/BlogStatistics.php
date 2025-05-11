@@ -33,9 +33,9 @@ class BlogStatistics
     // Posts by author
     public function getPostsByAuthor(): array
     {
-        return $this->createQueryBuilder('b')
-            ->join('b.author', 'a') // Ensure 'author' matches the property name in Blog entity
-            ->select('a.Email as author, COUNT(b.id) as postCount')
+        return $this->blogRepository->createQueryBuilder('b')
+            ->join('b.author', 'a') // Assuming 'author' is a relation
+            ->select('a.Email as author, COUNT(b.id) as postCount') // Use lowercase 'email'
             ->groupBy('a.Email')
             ->getQuery()
             ->getResult();
@@ -47,7 +47,7 @@ class BlogStatistics
     public function getMonthlyGrowth(): array
     {
         return $this->blogRepository->createQueryBuilder('b')
-            ->select("DATE_FORMAT(b.publishDate, '%Y-%m') as month, COUNT(b.id) as postCount")
+            ->select("SUBSTRING(b.createdAt, 1, 7) as month, COUNT(b.id) as postCount")
             ->groupBy('month')
             ->orderBy('month')
             ->getQuery()
