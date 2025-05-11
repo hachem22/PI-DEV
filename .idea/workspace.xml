@@ -4,25 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="48a21b99-9f65-4520-94e3-09543eb58b1f" name="Changes" comment="stats">
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/BlogController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/BlogController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Blog.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Blog.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/BlogStatistics.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/BlogStatistics.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/SentimentAnalysisService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/SentimentAnalysisService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/_delete_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/blog/stats.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/blog/stats.html.twig" afterDir="false" />
-    </list>
+    <list default="true" id="48a21b99-9f65-4520-94e3-09543eb58b1f" name="Changes" comment="version final de blog" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -310,7 +292,7 @@
       <workItem from="1746888518559" duration="570000" />
       <workItem from="1746889160200" duration="2456000" />
       <workItem from="1746966339034" duration="182000" />
-      <workItem from="1746970092086" duration="5033000" />
+      <workItem from="1746970092086" duration="5355000" />
     </task>
     <task id="LOCAL-00001" summary="h">
       <option name="closed" value="true" />
@@ -392,7 +374,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741182258957</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="version final de blog">
+      <option name="closed" value="true" />
+      <created>1746975485135</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1746975485135</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -419,6 +409,7 @@
     <MESSAGE value=" change beaucoup de chose2" />
     <MESSAGE value=" IA sentiment" />
     <MESSAGE value="stats" />
-    <option name="LAST_COMMIT_MESSAGE" value="stats" />
+    <MESSAGE value="version final de blog" />
+    <option name="LAST_COMMIT_MESSAGE" value="version final de blog" />
   </component>
 </project>
